@@ -18,17 +18,18 @@ import com.google.common.io.Files;
 import com.google.common.io.LineProcessor;
 
 public class FileProcessingTest {
+	private static final String ERROR_PREFIX = "[ERROR]";
+
 	List<String> findFirst10Errors(File file) throws Exception {
-		BufferedReader reader = new BufferedReader(new FileReader(file));
+		final BufferedReader reader = new BufferedReader(new FileReader(file));
 		String line = null;
-		ArrayList<String> output = new ArrayList<String>();
+		final ArrayList<String> output = new ArrayList<String>();
 		while ((line = reader.readLine()) != null) {
-			if (line.startsWith("[ERROR]")) {
+			if (line.startsWith(ERROR_PREFIX)) {
 				output.add(line);
 			}
 			if (output.size() >= 10) {
-				reader.close();
-				return output;
+				break;
 			}
 		}
 
@@ -41,13 +42,7 @@ public class FileProcessingTest {
 		File file = new File(getClass().getResource("test.log").toURI());
 		assertThat(findFirst10Errors(file))
 			.hasSize(10)
-			.are(new Condition<String>() {
-				@Override
-				public boolean matches(String value) {
-					return value.startsWith("[ERROR]");
-				}
-				
-			});
+			.are(startingWithError());
 	}
 	
 	private List<String> findFirst10Errors_guava(File file) throws IOException {
@@ -56,7 +51,7 @@ public class FileProcessingTest {
 			
 			@Override
 			public boolean processLine(String line) throws IOException {
-				if (line.startsWith("[ERROR]")) {
+				if (line.startsWith(ERROR_PREFIX)) {
 					accumulator.add(line);
 				}
 				return accumulator.size() < 10;
@@ -75,13 +70,16 @@ public class FileProcessingTest {
 		File file = new File(getClass().getResource("test.log").toURI());
 		assertThat(findFirst10Errors_guava(file))
 			.hasSize(10)
-			.are(new Condition<String>() {
-				@Override
-				public boolean matches(String value) {
-					return value.startsWith("[ERROR]");
-				}
-				
-			});
+			.are(startingWithError());
+	}
+
+	private static Condition<String> startingWithError() {
+		return new Condition<String>() {
+			@Override
+			public boolean matches(String value) {
+				return value.startsWith(ERROR_PREFIX);
+			}
+		};
 	}
 
 	
