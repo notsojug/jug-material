@@ -1,7 +1,6 @@
 package jug.guava;
 
-import static org.assertj.core.api.Assertions.*;
-import static jug.guava.StateAssert.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Collection;
 import java.util.List;
