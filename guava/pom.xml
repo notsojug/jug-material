@@ -5,6 +5,7 @@
 		<groupId>io.github.civitz</groupId>
 		<artifactId>jug-material</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 	
 	<artifactId>jug-guava</artifactId>
