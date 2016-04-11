@@ -7,7 +7,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
-	
+
 	<artifactId>jug-guava</artifactId>
 	<packaging>jar</packaging>
 
@@ -25,4 +25,27 @@
 			<artifactId>assertj-core</artifactId>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<defaultGoal>clean test</defaultGoal>
+		<plugins>
+			<plugin>
+				<groupId>org.assertj</groupId>
+				<artifactId>assertj-assertions-generator-maven-plugin</artifactId>
+				<version>2.0.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate-assertions</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<classes>
+						<param>jug.guava.State</param>
+					</classes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
