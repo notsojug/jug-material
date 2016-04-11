@@ -1,7 +1,6 @@
 package jug.guava;
 
 import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
-import static org.junit.Assert.*;
 
 import org.junit.Test;
 
@@ -16,7 +15,6 @@ public class ParametersCheckingTest {
 		if (aString.isEmpty()) {
 			throw new IllegalArgumentException("empty string not permitted");
 		}
-
 		if (someInt < 0 || someInt > 10) {
 			throw new IllegalArgumentException("wrong int value");
 		}
@@ -47,6 +45,7 @@ public class ParametersCheckingTest {
 		Preconditions.checkNotNull(aString, "string cannot be null");
 		Preconditions.checkArgument(aString.isEmpty(), "String cannot be empty");
 		Preconditions.checkArgument((someInt < 0 || someInt > 10), "wrong int value");
+		// do something
 	}
 	
 	@Test(expected=NullPointerException.class)
