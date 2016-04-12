@@ -9,7 +9,10 @@ import org.assertj.core.api.Condition;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Iterables;
@@ -87,5 +90,38 @@ public class FilteringTest {
                 .toList();
 
 		assertThat(mdwStates).areExactly(4, hasMdwRegion);
+	}
+	
+	
+	@Test
+	public void shouldConcatenateMidwestCities() throws Exception {
+		states.add(null);
+		StringBuilder sb=new StringBuilder();
+		for (State s : states) {
+			if (s != null && s.getRegionCode().equals("MDW")) {
+				sb.append(s.getName())
+				  .append(", ");
+			}
+		}
+		sb.delete(sb.length()-2, sb.length());
+		String join = sb.toString();
+		assertThat(join).isEqualTo("Wisconsin, Iowa, Ohio, South Dakota");
+	}
+
+	Function<State, String> extractName = new Function<State, String>() {
+		public String apply(State input) {
+			return input.getName();
+		}
+	};
+	
+	@Test
+	public void shouldConcatenateMidwestCities_guava() throws Exception {
+		states.add(null);
+		String join = FluentIterable.from(states)
+				.filter(Predicates.notNull())
+				.filter(byMdwRegion)
+				.transform(extractName)
+				.join(Joiner.on(", "));
+		assertThat(join).isEqualTo("Wisconsin, Iowa, Ohio, South Dakota");
 	}
 }
