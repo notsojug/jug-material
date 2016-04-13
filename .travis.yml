@@ -1,3 +1,6 @@
 language: java
 script:
-  - mvn test -Pjava6 -f guava/pom.xml
+  - jdk_switcher use openjdk6
+  - mvn guava/pom.xml
+  - jdk_switcher use oraclejdk8
+  - mvn pom.xml
