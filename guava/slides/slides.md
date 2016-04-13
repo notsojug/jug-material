@@ -6,23 +6,27 @@ class: center, middle
 
 # What/Who?
 
-Guava is a ... fruit.
+Guava is a fruit.
 
-No, well, it's just Google's Java.
+--
 
-G-java. Guava. (got it? nevermind)
+Just kidding... it's Google's collection of utilities.
 
-Google's collection of utilities.
+--
+
+Battle-tested in production.
+
+Well unit-tested (286,000 test cases, as of 2014).
 
 ---
 
 # Why?
 
+Java 6 target
+
 Simple, clean code
 
-Battle-tested in production.
-
-286,000 test cases (as of 2014).
+Sane defaults
 
 ---
 
@@ -35,4 +39,16 @@ Battle-tested in production.
 
 ---
 
-# Introduction
+## Example: Collections constructors 
+
+```
+List<String> list = 
+	Lists.newArrayList("one", "two", null, "yo");
+```
+```
+Set<Integer> set = Sets.newHashSetWithExpectedSize(10);
+```
+```
+Comparator<String> c = /* ... */
+Map<String, Elephants> map = Maps.newTreeMap(c);
+```

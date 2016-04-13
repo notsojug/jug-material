@@ -12,7 +12,10 @@
         font-family: 'Droid Serif';
         font-weight: normal;
       }
-      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      .remark-code, .remark-inline-code { 
+      	font-family: 'Ubuntu Mono';
+      	font-size: 32px; 
+      }
       .remark-slide-content { font-size: 32px; }
     </style>
   </head>
@@ -21,7 +24,30 @@
     </script>
     <script>
       var slideshow = remark.create({
-    	  sourceUrl: './slides.md'
+    	  sourceUrl: './slides.md',
+    	  ratio: '16:9',
+    
+          // Navigation options
+          navigation: {
+            // Enable or disable navigating using scroll
+            // Default: true
+            // Alternatives: false
+            scroll: false,
+    
+            // Enable or disable navigation using touch
+            // Default: true
+            // Alternatives: false
+            touch: true,
+    
+            // Enable or disable navigation using click
+            // Default: false
+            // Alternatives: true
+            click: false
+          },
+
+//        highlightStyle: "darkula",
+          highlightLanguage: "java",
+
       });
     </script>
   </body>
