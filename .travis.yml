@@ -1,6 +1,6 @@
 language: java
 script:
   - jdk_switcher use openjdk6
-  - mvn guava/pom.xml
+  - mvn -f guava/pom.xml
   - jdk_switcher use oraclejdk8
-  - mvn pom.xml
+  - mvn -f pom.xml
