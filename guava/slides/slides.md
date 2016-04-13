@@ -51,13 +51,19 @@ Also set algebra, map transform/filter, ...
 ## Example: Collections2
 
 ```
-List<String> warnames = Collections2.transform(elephants, 
+Collections2.filter(elephants, new Predicate<Elephant>() {
+		@Override
+		public boolean apply(Elephant input) 
+			{ return input.getHeight() > 2.5d; }
+	}); // Collection<Elephant> taller than 2.5 meters
+```
+```
+Collections2.transform(elephants,  
 	new Function<Elephant, String>() {
 		@Override
-		public String apply(Elephant input) {
-			return input.getWarName();
-		}
-	});
+		public String apply(Elephant input) 
+			{ return input.getWarName(); }
+	}); // Collection<String> of warnames
 ```
 
 ---
