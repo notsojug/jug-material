@@ -13,53 +13,27 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<java.version>1.8</java.version>
 		<assertj.version>3.4.0</assertj.version>
+		<javaslang.version>2.0.2</javaslang.version>
+		<immutables.version>2.1.15</immutables.version>
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-			<scope>test</scope>
-		</dependency>
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
 			<version>${assertj.version}</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>19.0</version>
-		</dependency>
-		<dependency>
-			<groupId>io.javaslang</groupId>
-			<artifactId>javaslang</artifactId>
-			<version>2.0.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.immutables</groupId>
-			<artifactId>value</artifactId>
-			<version>2.1.15</version>
-			<scope>provided</scope>
-		</dependency>
 	</dependencies>
-
 
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-					<useIncrementalCompilation>false</useIncrementalCompilation>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+	
 </project>

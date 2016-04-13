@@ -1,18 +1,18 @@
 package jug.lambda;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.io.Serializable;
+import java.util.function.Supplier;
+
 import org.junit.Test;
-
-import static org.assertj.core.api.Assertions.*;
-
-import javaslang.Function0;
-import javaslang.λ;
 
 public class IntersectionTypesTest {
   @Test
   public void shouldHaveMultipleInterfaces() {
-    Function0<String> greet = new MultiplePersonalities().greet();
-    assertThat(greet.apply()).isEqualTo("Hello!");
-    assertThat(greet.getClass().getInterfaces()).contains(Function0.class)
-        .contains(λ.Memoized.class);
+    Supplier<String> greet = new MultiplePersonalities().greet();
+    assertThat(greet.get()).isEqualTo("Hello!");
+    assertThat(greet.getClass().getInterfaces()).contains(Supplier.class)
+        .contains(Serializable.class);
   }
 }

@@ -1,10 +1,10 @@
 package jug.lambda;
 
-import javaslang.Function0;
-import javaslang.λ;
+import java.io.Serializable;
+import java.util.function.Supplier;
 
 public class MultiplePersonalities {
-  public Function0<String> greet() {
-    return (Function0<String> & λ.Memoized) () -> "Hello!";
+  public Supplier<String> greet() {
+    return (Supplier<String> & Serializable) () -> "Hello!";
   }
 }
