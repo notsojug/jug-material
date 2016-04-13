@@ -80,7 +80,7 @@ ImmutableSet<String> s =
 ```
 
 Those are useful for const values (list of valid strings/objects/whatever...).
-Deeply immutable, quite different from `Collections.unmodifiable*(*)`.
+Quite different from `Collections.unmodifiable*(*)`.
 
 ???
 
