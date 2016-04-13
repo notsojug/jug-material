@@ -13,6 +13,7 @@
 	<modules>
 		<module>guava</module>
 		<module>lambda</module>
+		<module>demo</module>
 	</modules>
 
 	<properties>

@@ -1,0 +1,43 @@
+[WARN] Init: Session Cache is not configured [hint: SSLSessionCache]
+[WARN] RSA server certificate CommonName (CN) `SRVMPS900004' does NOT match server name!?
+[WARN] RSA server certificate CommonName (CN) `SRVMPS900004' does NOT match server name!?
+[NOTICE] Apache/2.2.25 (Win32) mod_ssl/2.2.25 OpenSSL/0.9.8x configured -- resuming normal operations
+[ERROR] ap_proxy_connect_backend disabling worker for (127.0.0.1)
+[NOTICE] Server built: Sep 23 2013 14:12:51
+[NOTICE] Parent: Created child process 1472
+[ERROR] ap_proxy_connect_backend disabling worker for (127.0.0.1)
+[ERROR] proxy: SCGI: failed to make connection to backend: 127.0.0.1:16338
+[ERROR] (OS 10061)No connection could be made because the target machine actively refused it.  : proxy: SCGI: attempt to connect to 
+[NOTICE] Disabled use of AcceptEx() WinSock2 API
+[WARN] Init: Session Cache is not configured [hint: SSLSessionCache]
+[WARN] RSA server certificate CommonName (CN) `SRVMPS900004' does NOT match server name!?
+[WARN] RSA server certificate CommonName (CN) `SRVMPS900004' does NOT match server name!?
+[NOTICE] Child 1472: Child process is running
+[ERROR] proxy: SCGI: failed to make connection to backend: 127.0.0.1:16338
+[ERROR] (OS 10061)No connection could be made because the target machine actively refused it.  : proxy: SCGI: attempt to connect to 
+[ERROR] ap_proxy_connect_backend disabling worker for (127.0.0.1)
+[ERROR] proxy: SCGI: failed to make connection to backend: 127.0.0.1:16338
+[NOTICE] Child 1472: Acquired the start mutex.
+[ERROR] ap_proxy_connect_backend disabling worker for (127.0.0.1)
+[ERROR] proxy: SCGI: failed to make connection to backend: 127.0.0.1:16338
+[ERROR] (OS 10061)No connection could be made because the target machine actively refused it.  : proxy: SCGI: attempt to connect to 
+[NOTICE] Child 1472: Starting 150 worker threads.
+[NOTICE] Child 1472: Listening on port 443.
+[NOTICE] Child 1472: Listening on port 443.
+[NOTICE] Child 1472: Listening on port 80.
+[NOTICE] Child 1472: Listening on port 80.
+[ERROR] ap_proxy_connect_backend disabling worker for (127.0.0.1)
+[ERROR] (OS 10061)No connection could be made because the target machine actively refused it.  : proxy: SCGI: attempt to connect to 
+[ERROR] proxy: SCGI: failed to make connection to backend: 127.0.0.1:16338
+[ERROR] (OS 10061)No connection could be made because the target machine actively refused it.  : proxy: SCGI: attempt to connect to 
+[ERROR] ap_proxy_connect_backend disabling worker for (127.0.0.1)
+[ERROR] proxy: SCGI: failed to make connection to backend: 127.0.0.1:16338
+[ERROR] (OS 10061)No connection could be made because the target machine actively refused it.  : proxy: SCGI: attempt to connect to 
+[ERROR] ap_proxy_connect_backend disabling worker for (127.0.0.1)
+[ERROR] proxy: SCGI: failed to make connection to backend: 127.0.0.1:16338
+[ERROR] (OS 10061)No connection could be made because the target machine actively refused it.  : proxy: SCGI: attempt to connect to 
+[ERROR] ap_proxy_connect_backend disabling worker for (127.0.0.1)
+[ERROR] proxy: SCGI: failed to make connection to backend: 127.0.0.1:16338
+[ERROR] (OS 10061)No connection could be made because the target machine actively refused it.  : proxy: SCGI: attempt to connect to 
+[ERROR] ap_proxy_connect_backend disabling worker for (127.0.0.1)
+[ERROR] proxy: SCGI: failed to make connection to backend: 127.0.0.1:16338
