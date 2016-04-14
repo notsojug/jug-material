@@ -1,5 +1,6 @@
 package jug.optional;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.Map;
 
 import com.google.common.base.Optional;
@@ -18,14 +19,14 @@ public class TheHappyFarmer {
 		this.map = Maps.newHashMap();
 	}
 	
-	public TheHappyFarmer harvest(String key, @Nullable Integer value) {
-		map.put(key, value);
+	public TheHappyFarmer harvest(String what, @Nullable Integer howMuch) {
+		map.put(checkNotNull(what), howMuch);
 		return this;
 	}
 	
 	/** I'm idiot-proof! */
-	public Optional<Integer> pickOut(String key) {
-		return Optional.fromNullable(map.get(key));
+	public Optional<Integer> pickOut(String what) {
+		return Optional.fromNullable(map.get(checkNotNull(what)));
 	}
 
 }
