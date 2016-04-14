@@ -105,7 +105,7 @@ inverse.get(5); // "five"
 ```
 ---
 
-## Example: Objects/MoreObjects/Enums
+## Example: Objects/MoreObjects
 
 ```
 @Override
