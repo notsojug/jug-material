@@ -2,6 +2,33 @@
 
 ![Build status for JUG](https://api.travis-ci.org/civitz/jug-material.svg)
 
-## Interesting bits of Guava code.
+This project holds code for the JUG, feel free to fork.
 
-We explore the Guava library by comparing side-to-side with equivalent plain java 6 code.
+## Modules
+
+Each module represents a talk of the jug
+
+- Demo: an empty, disposable module for the next talk 
+- Guava: a collection of utilities from Google
+- Optional: a design pattern for values that may be not present (towards functional programming)
+- Lambda: an exploration of the lambdas in the java programming language
+
+## Contributing
+
+Each accepted talk can (should?) have its own subproject/submodule.
+
+### Buildable modules
+
+Each module should compile with a `mvn clean test` in the main directory, and optionally be buildable per-se (`cd <modulename> && mvn`). 
+
+### Pull request and travis-ci
+
+Each PR should build with travis-ci: 
+
+- travis-ci only issues a `mvn clean test` at the root of the project, so each subproject must also be mentioned as a module.
+- if you encounter any issues because of the travis-ci configuration, please mention it in the PR and you will be contacted.
+
+### Dependencies
+
+- Add each module dependency in the module's `pom.xml`.
+- Dependencies in main `pom.xml` will be scrutinized: only those compatible with java 6 AND requested by the majority of the submodules will be accepted in the main `pom.xml`
