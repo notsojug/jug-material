@@ -11,9 +11,25 @@ import org.assertj.core.api.Fail;
 import org.junit.Test;
 
 import com.google.common.base.Splitter;
+import com.google.common.base.Splitter.MapSplitter;
 
+/**
+ * A test to explore the {@link Splitter} class from guava. 
+ *
+ */
 public class SplitStringTest {
 	
+	/**
+	 * A method to split words from a string, giving the separator. The method
+	 * tolerates empty values, removing them from the result. The method also
+	 * trims the resulting words.
+	 * 
+	 * @param words
+	 *            the string to split
+	 * @param separator
+	 *            the separator for the words.
+	 * @return a list of splitted strings.
+	 */
 	List<String> splitWords(String words, String separator){
 		String[] strings = words.split(separator);
 		ArrayList<String> result = new ArrayList<String>();
@@ -25,6 +41,11 @@ public class SplitStringTest {
 		}
 		return result;
 	}
+	
+	/*
+	 * from here on, you can find a series of test to assert the behavior of the
+	 * function
+	 */
 	
 	@Test
 	public void shouldSplitTwoWords() throws Exception {
@@ -44,6 +65,25 @@ public class SplitStringTest {
 			.containsOnly("pippo", "pluto");
 	}
 	
+	/*
+	 * Now let's try something more complex: from a string of key-value list, create a map.
+	 * <p>
+	 * e.g. <code> hello=it, is=me </code> should get a map with 2 keys and 2 values.
+	 */
+	
+	/**
+	 * A method to get a map from a string consisting in key-value pairs
+	 * separated by two kinds of separators: one for the key and value, one for
+	 * the pairs.
+	 * 
+	 * @param string
+	 *            the string to split.
+	 * @param separator
+	 *            the separator of the key-value pairs.
+	 * @param keyValueSeparator
+	 *            the separator between key and value.
+	 * @return a map from the given string.
+	 */
 	Map<String, String> splitToMap(String string, String separator, String keyValueSeparator) {
 		List<String> kvs = splitWords(string, separator);
 		HashMap<String, String> map = new HashMap<String, String>();
@@ -52,12 +92,17 @@ public class SplitStringTest {
 			if (keyValue.size() == 2) {
 				map.put(keyValue.get(0), keyValue.get(1));
 			} else {
-				throw new IllegalArgumentException();
+				throw new IllegalArgumentException("Splitting the key and the vlue didn't result in a pair of values");
 			}
 		}
 		return map;
 	}
 
+	/*
+	 * from here on, you can find a series of test to assert the behavior of the
+	 * function
+	 */
+	
 	@Test
 	public void shouldSplitToMap() throws Exception {
 		Map<String, String> split = splitToMap("yo=mama, so=fat", ",", "=");
@@ -71,6 +116,37 @@ public class SplitStringTest {
 		Fail.failBecauseExceptionWasNotThrown(IllegalArgumentException.class);
 	}
 	
+	
+	/*
+	 * Now let's try to do the same as above, but with guava.
+	 */
+
+	/**
+	 * A method to split words from a string, giving the separator. The method
+	 * tolerates empty values, removing them from the result. The method also
+	 * trims the resulting words.
+	 * <p>
+	 * This method uses guava's {@link Splitter} to achieve the result.
+	 * 
+	 * @param words
+	 *            the string to split
+	 * @param separator
+	 *            the separator for the words.
+	 * @return a list of splitted strings.
+	 */
+	private List<String> split_guava(final String string, String separator) {
+		return Splitter.on(separator)	// split using the separator
+				.trimResults()			// trim each resulting splitted word
+				.omitEmptyStrings()		// omit results which are empty
+				.splitToList(string);	// get a list instead of an iterable 
+		
+		/*
+		 * each of these calls produces a new, different Splitter, which you can
+		 * cache for later use, since they are immutable and thread safe
+		 */
+	}
+	
+
 	@Test
 	public void shouldSplitTwoWords_guava() throws Exception {
 		Iterable<String> split = split_guava("pippo,pluto", ",");
@@ -88,13 +164,34 @@ public class SplitStringTest {
 		Iterable<String> split = split_guava("  pippo, ,,,, pluto  ,,", ",");
 		assertThat(split).containsOnly("pippo", "pluto");
 	}
-
-	private List<String> split_guava(final String string, String separator) {
-		return Splitter.on(separator)
-				.trimResults()
-				.omitEmptyStrings()
-				.splitToList(string);
+	
+	/**
+	 * A method to get a map from a string consisting in key-value pairs
+	 * separated by two kinds of separators: one for the key and value, one for
+	 * the pairs.
+	 * <p>
+	 * This method uses guava's {@link Splitter} and {@link MapSplitter} to
+	 * achieve the result.
+	 * 
+	 * @param string
+	 *            the string to split.
+	 * @param separator
+	 *            the separator of the key-value pairs.
+	 * @param keyValueSeparator
+	 *            the separator between key and value.
+	 * @return a map from the given string.
+	 */
+	private Map<String, String> splitToMap_guava(String string, String separator, String keyValueSeparator) {
+		return Splitter.on(separator)	// split using the separator
+				.trimResults()			// trim each resulting splitted word
+				// use the second separator as a key-value separator
+				.withKeyValueSeparator(keyValueSeparator) 
+				.split(string);			// split to a map
 	}
+	
+	/*
+	 * test the behavior of the above function
+	 */
 	
 	@Test
 	public void shouldSplitToMap_guava() throws Exception {
@@ -111,10 +208,4 @@ public class SplitStringTest {
 		Fail.failBecauseExceptionWasNotThrown(IllegalArgumentException.class);
 	}
 
-	private Map<String, String> splitToMap_guava(String string, String separator, String keyValueSeparator) {
-		return Splitter.on(separator)
-				.trimResults()
-				.withKeyValueSeparator(keyValueSeparator)
-				.split(string);
-	}
 }

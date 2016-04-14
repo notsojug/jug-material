@@ -34,6 +34,16 @@ public class State {
     return population;
   }
 
+	/**
+	 * This method honor the same contract with {@link Object#hashCode()},
+	 * but uses the guava {@link Objects#hashCode()} to calculate the
+	 * value. 
+	 * <p>
+	 * The calculated value may be different from eclipse-generated
+	 * algorithm, but it is guaranteed to be compliant with java specification.
+	 * 
+	 * @return the hashCode of this object.
+	 */
   public int hashCodeGuava() {
     return Objects
         .hashCode(this.stateCode,
@@ -42,6 +52,19 @@ public class State {
             this.population);
   }
   
+	/**
+	 * This method satisfies the contract for {@link Object#equals(Object)}
+	 * , but using the {@link Objects#equals(Object)} utility to calculate
+	 * equality.
+	 * <p>
+	 * While this may be not an improvement in performance or functionality, it
+	 * is indeed more compact and clear than the naive implementation from
+	 * eclipse.
+	 * 
+	 * @param obj
+	 *            the object to compare against.
+	 * @return true if the given object is equal to the instance.
+	 */
   public boolean equalsGuava(Object obj) {
     if (obj == null) {
       return false;
@@ -56,6 +79,18 @@ public class State {
         && Objects.equal(this.population, other.population);
   }
   
+  
+	/**
+	 * Same as {@link Object#toString()} from eclipse, but using the
+	 * {@link MoreObjects.ToStringHelper} class.
+	 * <p>
+	 * The ToStringHelper class simplifies/clarifies the creation of the
+	 * toString method with a handy facility to omit null values. Similarly to
+	 * the {@link #equalsGuava(Object)}, this approach doesn't change the
+	 * outcome of the method, it just clarifies the intent in a readable way.
+	 * 
+	 * @return the string representation of the instance.
+	 */
   public String toStringGuava() {
     return MoreObjects.toStringHelper(this)
         .omitNullValues()
