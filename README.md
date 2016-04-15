@@ -6,7 +6,7 @@ This project holds code for the JUG, feel free to fork.
 
 ## Modules
 
-Each module represents a talk of the jug
+Each module represents a talk of the JUG
 
 - Demo: an empty, disposable module for the next talk 
 - Guava: a collection of utilities from Google
@@ -19,7 +19,7 @@ Each accepted talk can (should?) have its own subproject/submodule.
 
 ### Buildable modules
 
-Each module should compile with a `mvn clean test` in the main directory, and optionally be buildable per-se (`cd <modulename> && mvn`). 
+Each module should compile with a `mvn clean test` in the main directory, and optionally be buildable per-se (`cd <modulename> && mvn clean test`). 
 
 ### Pull request and travis-ci
 
