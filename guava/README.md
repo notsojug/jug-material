@@ -10,4 +10,4 @@ We explore the Guava library by comparing side-to-side with equivalent plain jav
 
 [Comparison with Apache Commons](https://github.com/google/guava/wiki/ApacheCommonCollectionsEquivalents)
 
-[Philosophy of the librart](https://github.com/google/guava/wiki/PhilosophyExplained)
+[Philosophy of the library](https://github.com/google/guava/wiki/PhilosophyExplained)
