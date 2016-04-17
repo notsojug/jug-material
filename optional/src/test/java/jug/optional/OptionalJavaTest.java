@@ -4,6 +4,9 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.io.Serializable;
 import java.util.Optional;
+import java.util.Properties;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.junit.Test;
 
@@ -16,16 +19,71 @@ public class OptionalJavaTest {
 	public void shouldNotBeSerializable() throws Exception {
 		assertThat(Optional.class.getInterfaces()).doesNotContain(Serializable.class);
 	}
+	
+	@Test
+	public void shouldSupplyAndConsumeAndThrow() throws Exception {
+		Supplier<String> supplier = () -> "default";
+		Supplier<Exception> exceptionSupplier = () -> new IllegalArgumentException();
+		Consumer<String> consumer = s -> System.out.println(s);
+		
+		// What if consumers and suppliers are external?
+		Optional.ofNullable("test").orElseGet(supplier);
+		Optional.ofNullable("test").orElseThrow(exceptionSupplier);
+		Optional.ofNullable("test").ifPresent(consumer);
+		
+		Optional.ofNullable("test").orElseGet(() -> "default");
+		Optional.ofNullable("test").orElseThrow(() -> new IllegalArgumentException());
+//		Optional.ofNullable("test").orElseThrow(IllegalArgumentException::new);
+		Optional.ofNullable("test").ifPresent(s -> System.out.println(s));
+	}
+	
+	@Test
+	public void shouldFindOnlyPositiveValues_shootFoot() throws Exception {
+		Properties props = new Properties();
+		props.setProperty("a", "5");
+		props.setProperty("b", "true");
+		props.setProperty("c", "-3");
+		
+		Integer ret = 0; // Default value
+		String value = props.getProperty("b"); // Prolly null
+		if (value != null) {
+			try {
+				int i = Integer.valueOf(value); // Exception!
+				if (i > 0) { // The true logic
+					ret = i;
+				}
+			} catch (NumberFormatException e) {}
+		}
+		
+		assertThat(ret).isEqualTo(0);
+	}
+	
+	@Test
+	public void shouldFindOnlyPositiveValues() throws Exception {
+		Properties props = new Properties();
+		props.setProperty("a", "5");
+		props.setProperty("b", "true");
+		props.setProperty("c", "-3");
+		
+		// Final and no exceptions!
+		final Integer ret = 
+				Optional.of(props.getProperty("b")) // Optional String
+				.flatMap(OptionalUtility::stringToInt) // To optional integer
+				.filter(i -> i > 0) // The logic
+				.orElse(0); // Default value
+		
+		assertThat(ret).isEqualTo(0);
+	}
 
 	@Test
 	public void testOldJavaStyle() throws Exception {
 		Person person = new Person(null);
-		if (person != null) {
+		if (person != null) { // Prolly null
 			Address address = person.getAddress();
 			assertThat(address).isNull();
-			if (address != null) {
+			if (address != null) { // Prolly null
 				City city = address.getCity();
-				if (city != null) {
+				if (city != null) { // Prolly null
 					city.getName();
 				}
 			}
@@ -38,10 +96,10 @@ public class OptionalJavaTest {
 		if (person != null) {
 			Optional<Address> address = person.address();
 			assertThat(address).isEmpty();
-			if (address.isPresent()) {
+			if (address.isPresent()) { // Ugly check
 				Optional<City> city = address.get().city();
-				if (city.isPresent()) {
-					city.get().name();
+				if (city.isPresent()) { // Ugly check
+					city.get().name(); // NoSuchElementException is close here
 				}
 			}
 		}
@@ -51,10 +109,10 @@ public class OptionalJavaTest {
 	public void testOptionalCorrectPresent() throws Exception {
 		Optional<Person> person = Optional.of(new Person(new Address(new City("Padua"))));
 		
-		String theCity = person.flatMap(p -> p.address())
-				.flatMap(a -> a.city())
-				.flatMap(c -> c.name())
-				.orElse("Unknow");
+		String theCity = person.flatMap(p -> p.address()) // Optional person to Optional address
+				.flatMap(a -> a.city()) // Optional address to optional city
+				.flatMap(c -> c.name()) // Optional city to optional string
+				.orElse("Unknow"); // Default value
 		
 		assertThat(theCity).isNotNull().isEqualTo("Padua");
 	}
@@ -63,6 +121,7 @@ public class OptionalJavaTest {
 	public void testOptionalCorrectNoCity() throws Exception {
 		Optional<Person> lostPerson = Optional.of(new Person(new Address(null)));
 		
+		// Same code multiple scenarios
 		String theUnknowCity = lostPerson.flatMap(p -> p.address())
 				.flatMap(a -> a.city())
 				.flatMap(c -> c.name())
@@ -74,7 +133,8 @@ public class OptionalJavaTest {
 	@Test
 	public void testOptionalCorrectNoAddress() throws Exception {
 		Optional<Person> lostPerson = Optional.of(new Person(null));
-		
+
+		// Same code multiple scenarios
 		String theUnknowCity = lostPerson.flatMap(p -> p.address())
 				.flatMap(a -> a.city())
 				.flatMap(c -> c.name())
@@ -86,7 +146,8 @@ public class OptionalJavaTest {
 	@Test
 	public void testOptionalCorrectNoPerson() throws Exception {
 		Optional<Person> lostPerson = Optional.empty();
-		
+
+		// Same code multiple scenarios
 		String theUnknowCity = lostPerson.flatMap(p -> p.address())
 				.flatMap(a -> a.city())
 				.flatMap(c -> c.name())
@@ -99,6 +160,8 @@ public class OptionalJavaTest {
 	public void testOptionalBetter() throws Exception {
 		Optional<Person> person = Optional.of(new Person(new Address(new City("Padua"))));
 		
+		// Why use a lambda when we already have a method that does the same?
+		// Method references ROCKS
 		String theCity = person.flatMap(Person::address)
 				.flatMap(Address::city)
 				.flatMap(City::name)
@@ -109,6 +172,9 @@ public class OptionalJavaTest {
 	
 	@Test
 	public void testOptMap() throws Exception {
+		// What if all java methods that can return null where returning optional instead??
+		// Unfortunately this breaks backward compatibility... :(
+		
 		OptMap<String, Person> population = new OptMap<>();
 		population.put("joshua", new Person(new Address(new City("Padua"))));
 		
