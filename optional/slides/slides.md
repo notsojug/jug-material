@@ -81,7 +81,7 @@ Absent is a static factory method that returns a special singleton instance of t
 
 ---
 
-## Introducing the Optional class, for Java 6
+## Introducing the Optional class **for Java 6**
 
 ### Yes! Guava has `com.google.common.base.Optional<T>` too!
 
@@ -175,8 +175,24 @@ Bye Bye NullPointerException!
 * `Optional<U> map(Function<? super T, ? extends U>)`: if a value is present, apply the provided mapping function to it
 * `Optional<U> flatMap(Function<? super T, Optional<U>>)`: like map, but the function result in another optional
 * `void ifPresent(Consumer<? super T>)`: if a value is present, invoke the specified consumer with the value
-* `T orElse(T)`
-* `<X extends Throwable> T orElseThrow(Supplier<? extends X>)`
+
+---
+
+## Interesting methods
+
+### Java
+
+* `T orElse(T)`: return the value if present, otherwise return _other_
+* `<X extends Throwable> T orElseThrow(Supplier<? extends X>)`: return the contained value, if present, otherwise throw an exception to be created by the provided supplier
+
+```
+if (obj == null) {
+	throw new NullPointerException;
+}
+```
+```
+return optObj.orElseThrow(NullPointerException::new);
+```
 
 ---
 
@@ -189,6 +205,9 @@ Optional is not meant to be a mechanism to avoid all types of null pointers. The
 The problem is that **the caller of the function might not have read the javadoc** for the method, and forget about handling the null case.
 
 This happens frequently and is one of the main causes of null pointer exceptions, although not the only one.
+
+???
+Remember of Guava `Preconditions.checkNotNull`
 
 ---
 
