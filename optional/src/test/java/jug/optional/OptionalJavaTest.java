@@ -67,7 +67,7 @@ public class OptionalJavaTest {
 		
 		// Final and no exceptions!
 		final Integer ret = 
-				Optional.of(props.getProperty("b")) // Optional String
+				Optional.ofNullable(props.getProperty("b")) // Optional String
 				.flatMap(OptionalUtility::stringToInt) // To optional integer
 				.filter(i -> i > 0) // The logic
 				.orElse(0); // Default value
