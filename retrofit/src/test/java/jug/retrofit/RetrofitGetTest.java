@@ -16,7 +16,7 @@ import retrofit.RestAdapter;
 import retrofit.http.GET;
 import retrofit.http.Path;
 
-public class RetrofitBaseTest {
+public class RetrofitGetTest {
 	
 	/**
 	 * This is a very simple interface for a client.
