@@ -22,21 +22,8 @@ public class RetrofitPostTest {
 	// Google's json converter (it's used internally in retrofit).
 	Gson gson = new Gson();
 	
-	
 	/**
 	 * This is a very simple interface for a client.
-	 * <p>
-	 * Retrofit annotations are used by the retrofit library to infer the
-	 * correct http method, headers, and parameters of the http request.
-	 * <p>
-	 * The method return type is used to either return a deserialized object (in
-	 * json, for this example), or to return a generalized retrofit
-	 * {@link Response} type.
-	 * <p>
-	 * If you strip away the retrofit annotations, you obtain a plain old java
-	 * interface {@link MyClientInterface_withoutAnnotations}: imagine
-	 * unit-testing a class using this client...it would be very easy to mock
-	 * away this!
 	 */
 	public static interface ClientInterface {
 		
