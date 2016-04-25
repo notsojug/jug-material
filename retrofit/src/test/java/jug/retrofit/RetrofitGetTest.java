@@ -1,18 +1,20 @@
 package jug.retrofit;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static org.assertj.guava.api.Assertions.assertThat;
 
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
+import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.google.common.base.Optional;
-import com.squareup.okhttp.internal.http.Response;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
 
 import retrofit.RestAdapter;
+import retrofit.client.Response;
 import retrofit.http.GET;
 import retrofit.http.Path;
 
@@ -56,17 +58,9 @@ public class RetrofitGetTest {
 	}
 	
 	// the fake server
-	MockWebServer mockServer;
-	String serverUrl;
-
-	@Before
-	public void setUp() throws Exception{
-		mockServer = new MockWebServer();
-		// star the server
-		mockServer.play();
-		// get the server url
-		serverUrl = mockServer.getUrl("/").toString();
-	}
+	@Rule
+	public WireMockRule wireMockRule = new WireMockRule();
+	String serverUrl = "http://127.0.0.1:8080";
 	
 	/**
 	 * Creates the client for the given url.
@@ -87,8 +81,10 @@ public class RetrofitGetTest {
 	@Test
 	public void shouldGetTheCorrectValueForGoodResponse() throws Exception {
 		// prepare the server with canned response
-		MockResponse mockResponse = new MockResponse();
-		mockResponse.setBody("{\n  \"firstField\" = \"I love JSON\",\n  \"secondField\" = 3\n}");
+		wireMockRule.stubFor(get(urlMatching("/things/something"))
+	            .willReturn(aResponse()
+	                .withStatus(200)
+	                .withBody("{\n  \"firstField\" = \"I love JSON\",\n  \"secondField\" = 3\n}")));
 		/*
 		 * the above string is 
 		 * {
@@ -96,9 +92,6 @@ public class RetrofitGetTest {
          *   "secondField" = 3
          * }
 		 */
-		mockResponse.setResponseCode(200);
-		mockServer.enqueue(mockResponse);
-
 		
 		MyClientInterface client = createRetrofitClient(serverUrl);
 		
@@ -110,9 +103,7 @@ public class RetrofitGetTest {
 		assertThat(myObjectOfKey.getSecondField()).contains(3);
 
 		// verify that the request was made correctly
-		RecordedRequest request = mockServer.takeRequest();
-		assertThat(request.getMethod()).isEqualTo("GET");
-		assertThat(request.getPath()).isEqualTo("/things/something");
+		wireMockRule.verify(getRequestedFor(urlEqualTo("/things/something")));
 	}
 	
 	

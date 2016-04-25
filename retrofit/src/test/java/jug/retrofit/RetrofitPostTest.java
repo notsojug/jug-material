@@ -1,16 +1,23 @@
 package jug.retrofit;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.guava.api.Assertions.assertThat;
 
-import org.junit.Before;
+import java.util.List;
+
+import org.junit.Rule;
 import org.junit.Test;
 
+import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.github.tomakehurst.wiremock.matching.RequestPattern;
+import com.github.tomakehurst.wiremock.verification.LoggedRequest;
 import com.google.common.base.Optional;
 import com.google.gson.Gson;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import com.squareup.okhttp.mockwebserver.RecordedRequest;
 
 import retrofit.RestAdapter;
 import retrofit.client.Response;
@@ -21,6 +28,10 @@ public class RetrofitPostTest {
 	
 	// Google's json converter (it's used internally in retrofit).
 	Gson gson = new Gson();
+	
+	@Rule
+	public WireMockRule wireMockRule = new WireMockRule(8081);
+	String serverUrl = "http://127.0.0.1:8081";
 	
 	/**
 	 * This is a very simple interface for a client.
@@ -63,19 +74,6 @@ public class RetrofitPostTest {
 		}
 	}
 	
-	// the fake server
-	MockWebServer mockServer;
-	String serverUrl;
-
-	@Before
-	public void setUp() throws Exception{
-		mockServer = new MockWebServer();
-		// star the server
-		mockServer.play();
-		// get the server url
-		serverUrl = mockServer.getUrl("/").toString();
-	}
-	
 	/**
 	 * Creates the client for the given url.
 	 * 
@@ -93,9 +91,9 @@ public class RetrofitPostTest {
 	@Test
 	public void shouldGetTheCorrectValueForGoodResponse() throws Exception {
 		// prepare the server with canned response
-		MockResponse mockResponse = new MockResponse();
-		mockResponse.setResponseCode(201);
-		mockServer.enqueue(mockResponse);
+		wireMockRule.stubFor(post(urlMatching("/things/"))
+	            .willReturn(aResponse()
+	                .withStatus(201)));
 
 		// get the client
 		ClientInterface client = createRetrofitClient(serverUrl);
@@ -107,10 +105,11 @@ public class RetrofitPostTest {
 		client.saveMyObjectToIdentifier(objectToSave);
 
 		// verify that the request was made correctly
-		RecordedRequest request = mockServer.takeRequest();
-		assertThat(request.getMethod()).isEqualTo("POST");
-		assertThat(request.getPath()).isEqualTo("/things/");
-		MyObject fromJson = convertFromJson(request.getBody(), MyObject.class);
+		wireMockRule.verify(postRequestedFor(urlEqualTo("/things/")));
+		List<LoggedRequest> requests = wireMockRule.findRequestsMatching(RequestPattern.everything()).getRequests();
+		assertThat(requests).hasSize(1);
+		final LoggedRequest lastRequest = requests.get(0);
+		MyObject fromJson = convertFromJson(lastRequest.getBody(), MyObject.class);
 		assertThat(fromJson.getFirstField()).contains("I love JSON");
 		assertThat(fromJson.getSecondField()).contains(3);
 	}
