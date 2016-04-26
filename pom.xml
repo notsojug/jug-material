@@ -16,6 +16,7 @@
 		<module>optional</module>
 		<module>retrofit</module>
 		<module>demo</module>
+		<module>throwable</module>
 	</modules>
 
 	<properties>
