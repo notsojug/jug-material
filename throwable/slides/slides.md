@@ -4,6 +4,8 @@ class: center, middle
 
 ## A _glorified multilevel **goto**_ in Java
 
+(cit. [Mario Fusco](http://www.slideshare.net/mariofusco/from-object-oriented-to-functional-domain-modeling/33))
+
 ---
 
 When used to best advantage, exceptions can improve a program’s readability, reliability, and maintainability.
