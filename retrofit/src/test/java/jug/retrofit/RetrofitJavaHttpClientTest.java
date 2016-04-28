@@ -9,9 +9,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
 import static org.assertj.guava.api.Assertions.assertThat;
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.impl.client.HttpClientBuilder;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -20,29 +20,39 @@ import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.RetrofitError.Kind;
-import retrofit.client.ApacheClient;
+import retrofit.client.Request;
+import retrofit.client.UrlConnectionClient;
 
-public class RetrofitApacheClientTest {
+public class RetrofitJavaHttpClientTest {
 	private static final int MY_DEAR_TIMEOUT = 500;
 
 	// the fake server
 	@Rule
 	public WireMockRule wireMockRule = new WireMockRule();
 	String serverUrl = "http://127.0.0.1:8080";
+	
+	class UrlConnectionClientWithTimeout extends UrlConnectionClient{
+		
+		final int myTimeout;
+		
+		private UrlConnectionClientWithTimeout(int myTimeout) {
+			super();
+			this.myTimeout = myTimeout;
+		}
+
+		@Override
+		protected HttpURLConnection openConnection(Request request) throws IOException {
+			final HttpURLConnection openConnection = super.openConnection(request);
+			openConnection.setReadTimeout(myTimeout);
+			return openConnection;
+		}
+	}
 
 	private MyClientGetInterface createRetrofitClient(String url) {
-		RequestConfig configWithTimeout = RequestConfig.custom()
-				.setSocketTimeout(MY_DEAR_TIMEOUT)
-				.build();
-		HttpClient httpClient = HttpClientBuilder.create().
-				setDefaultRequestConfig(configWithTimeout)
-				.build();
 		RestAdapter restAdapter = new RestAdapter.Builder()
-				.setClient(new ApacheClient(httpClient ))
+				.setClient(new UrlConnectionClientWithTimeout(MY_DEAR_TIMEOUT))
 				.setEndpoint(url)
 				.build();
-		// based on the rest adapter, create an instance of the client, using
-		// MyClientInterface as a reference
 		return restAdapter.create(MyClientGetInterface.class);
 	}
 
