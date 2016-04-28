@@ -23,7 +23,7 @@ import retrofit.RetrofitError.Kind;
 import retrofit.client.ApacheClient;
 
 public class RetrofitApacheClientTest {
-	private static final int MY_DEAR_TIMEOUT = 500;
+	private static final int MY_DEAR_TIMEOUT = 5000;
 
 	// the fake server
 	@Rule

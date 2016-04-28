@@ -140,7 +140,7 @@ public class RetrofitErrorsTest {
 	}
 	
 	@Test
-	public void shouldGetUnexpectedErrorExceptionForGarbageResponse() throws Exception {
+	public void shouldGetUnexpectedErrorExceptionFor500Response() throws Exception {
 		// prepare the server with canned response
 		wireMockRule.stubFor(get(urlMatching("/things/something")).willReturn(aResponse().withStatus(500)));
 

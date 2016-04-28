@@ -24,7 +24,7 @@ import retrofit.client.Request;
 import retrofit.client.UrlConnectionClient;
 
 public class RetrofitJavaHttpClientTest {
-	private static final int MY_DEAR_TIMEOUT = 500;
+	private static final int MY_DEAR_TIMEOUT = 5000;
 
 	// the fake server
 	@Rule
