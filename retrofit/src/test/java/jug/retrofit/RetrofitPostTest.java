@@ -16,7 +16,6 @@ import org.junit.Test;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.github.tomakehurst.wiremock.matching.RequestPattern;
 import com.github.tomakehurst.wiremock.verification.LoggedRequest;
-import com.google.common.base.Optional;
 import com.google.gson.Gson;
 
 import retrofit.RestAdapter;
@@ -50,29 +49,6 @@ public class RetrofitPostTest {
 		Response saveMyObjectToIdentifier(@Body MyObject toAdd);
 	}
 
-	
-	/**
-	 * A simple bean to be serialized. 
-	 */
-	public static class MyObject{
-		private String firstField;
-		private Integer secondField;
-		
-		public Optional<String> getFirstField() {
-			return Optional.fromNullable(firstField);
-		}
-		
-		public Optional<Integer> getSecondField() {
-			return Optional.fromNullable(secondField);
-		}
-		
-		public static MyObject create(String firstField, Integer secondField) {
-			MyObject toreturn = new MyObject();
-			toreturn.firstField = firstField;
-			toreturn.secondField = secondField;
-			return toreturn;
-		}
-	}
 	
 	/**
 	 * Creates the client for the given url.

@@ -11,7 +11,6 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import com.google.common.base.Optional;
 
 import retrofit.RestAdapter;
 import retrofit.client.Response;
@@ -39,23 +38,6 @@ public class RetrofitGetTest {
 		@GET("/things/{key}")
 		MyObject getMyObjectOfKey(@Path("key") String identifier);
 	}
-
-	
-	/**
-	 * A simple bean to be serialized. 
-	 */
-	public static class MyObject{
-		private String firstField;
-		private Integer secondField;
-		
-		public Optional<String> getFirstField() {
-			return Optional.fromNullable(firstField);
-		}
-		
-		public Optional<Integer> getSecondField() {
-			return Optional.fromNullable(secondField);
-		}
-	}
 	
 	// the fake server
 	@Rule
@@ -73,7 +55,7 @@ public class RetrofitGetTest {
 		RestAdapter restAdapter = new RestAdapter.Builder()
 				.setEndpoint(url)
 				.build();
-		// based on the rest adapter, create an instace of the client, using
+		// based on the rest adapter, create an instance of the client, using
 		// MyClientInterface as a reference
 		return restAdapter.create(MyClientInterface.class);
 	}

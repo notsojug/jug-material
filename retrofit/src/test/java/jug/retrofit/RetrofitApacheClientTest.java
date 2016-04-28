@@ -6,6 +6,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
 import static org.assertj.guava.api.Assertions.assertThat;
 
 import org.apache.http.client.HttpClient;
@@ -15,42 +16,21 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import com.google.common.base.Optional;
 
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.RetrofitError.Kind;
 import retrofit.client.ApacheClient;
-import retrofit.http.GET;
-import retrofit.http.Path;
 
 public class RetrofitApacheClientTest {
 	private static final int MY_DEAR_TIMEOUT = 500;
-
-	public static interface MyClientInterface {
-		@GET("/things/{key}")
-		MyObject getMyObjectOfKey(@Path("key") String identifier);
-	}
-
-	public static class MyObject {
-		private String firstField;
-		private Integer secondField;
-
-		public Optional<String> getFirstField() {
-			return Optional.fromNullable(firstField);
-		}
-
-		public Optional<Integer> getSecondField() {
-			return Optional.fromNullable(secondField);
-		}
-	}
 
 	// the fake server
 	@Rule
 	public WireMockRule wireMockRule = new WireMockRule();
 	String serverUrl = "http://127.0.0.1:8080";
 
-	private MyClientInterface createRetrofitClient(String url) {
+	private MyClientGetInterface createRetrofitClient(String url) {
 		RequestConfig configWithTimeout = RequestConfig.custom()
 				.setSocketTimeout(MY_DEAR_TIMEOUT)
 				.build();
@@ -61,9 +41,9 @@ public class RetrofitApacheClientTest {
 				.setClient(new ApacheClient(httpClient ))
 				.setEndpoint(url)
 				.build();
-		// based on the rest adapter, create an instace of the client, using
+		// based on the rest adapter, create an instance of the client, using
 		// MyClientInterface as a reference
-		return restAdapter.create(MyClientInterface.class);
+		return restAdapter.create(MyClientGetInterface.class);
 	}
 
 	@Test
@@ -74,7 +54,7 @@ public class RetrofitApacheClientTest {
 						.withStatus(200)
 						.withBody("{\n  \"firstField\" = \"I love JSON\",\n  \"secondField\" = 3\n}")));
 
-		MyClientInterface client = createRetrofitClient(serverUrl);
+		MyClientGetInterface client = createRetrofitClient(serverUrl);
 
 		// invoke the method, get the bean
 		MyObject myObjectOfKey = client.getMyObjectOfKey("something");
@@ -96,7 +76,7 @@ public class RetrofitApacheClientTest {
 						.withStatus(200)
 						.withBody("{\n  \"firstField\" = \"I love JSON\",\n  \"secondField\" = 3\n}")));
 
-		MyClientInterface client = createRetrofitClient(serverUrl);
+		MyClientGetInterface client = createRetrofitClient(serverUrl);
 
 		// invoke the method, get the bean
 		MyObject myObjectOfKey = client.getMyObjectOfKey("something");
@@ -118,12 +98,13 @@ public class RetrofitApacheClientTest {
 						.withStatus(200)
 						.withBody("{\n  \"firstField\" = \"I love JSON\",\n  \"secondField\" = 3\n}")));
 
-		MyClientInterface client = createRetrofitClient(serverUrl);
+		MyClientGetInterface client = createRetrofitClient(serverUrl);
 
 		// invoke the method, get the bean
 		RetrofitError error = null;
 		try {
 			client.getMyObjectOfKey("something");
+			failBecauseExceptionWasNotThrown(RetrofitError.class);
 		} catch (RetrofitError e) {
 			error = e;
 		}
