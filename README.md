@@ -11,6 +11,8 @@ Each module represents a talk of the JUG
 - Demo: an empty, disposable module for the next talk 
 - Guava: a collection of utilities from Google
 - Optional: a design pattern for values that may be not present (towards functional programming)
+- Throwable: a talk on how (not) to use exceptions and related subjects
+- Retrofit: an awesome library to build type-safe, easy-to-read http clients
 - Lambda: an exploration of the lambdas in the java programming language
 
 ## Contributing
