@@ -9,9 +9,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
 import static org.assertj.guava.api.Assertions.assertThat;
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.impl.client.HttpClientBuilder;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -20,29 +20,47 @@ import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.RetrofitError.Kind;
-import retrofit.client.ApacheClient;
+import retrofit.client.Request;
+import retrofit.client.UrlConnectionClient;
 
-public class RetrofitApacheClientTest {
+public class RetrofitJavaHttpClientIT {
 	private static final int MY_DEAR_TIMEOUT = 5000;
 
 	// the fake server
 	@Rule
 	public WireMockRule wireMockRule = new WireMockRule();
 	String serverUrl = "http://127.0.0.1:8080";
+	
+	/**
+	 * An extension of {@link UrlConnectionClient} with a set timeout.
+	 */
+	class UrlConnectionClientWithTimeout extends UrlConnectionClient{
+		
+		final int myTimeout;
+		
+		private UrlConnectionClientWithTimeout(int myTimeout) {
+			super();
+			this.myTimeout = myTimeout;
+		}
+
+		/**
+		 * Override default behavior of {@link #openConnection(Request)},
+		 * forcing the timeout on read.
+		 */
+		@Override
+		protected HttpURLConnection openConnection(Request request) throws IOException {
+			final HttpURLConnection openConnection = super.openConnection(request);
+			openConnection.setReadTimeout(myTimeout);
+			return openConnection;
+		}
+	}
 
 	private MyClientGetInterface createRetrofitClient(String url) {
-		RequestConfig configWithTimeout = RequestConfig.custom()
-				.setSocketTimeout(MY_DEAR_TIMEOUT)
-				.build();
-		HttpClient httpClient = HttpClientBuilder.create().
-				setDefaultRequestConfig(configWithTimeout)
-				.build();
 		RestAdapter restAdapter = new RestAdapter.Builder()
-				.setClient(new ApacheClient(httpClient ))
+				// pass the new client with set timeout
+				.setClient(new UrlConnectionClientWithTimeout(MY_DEAR_TIMEOUT))
 				.setEndpoint(url)
 				.build();
-		// based on the rest adapter, create an instance of the client, using
-		// MyClientInterface as a reference
 		return restAdapter.create(MyClientGetInterface.class);
 	}
 
@@ -72,6 +90,7 @@ public class RetrofitApacheClientTest {
 		// prepare the server with canned response
 		wireMockRule.stubFor(get(urlMatching("/things/something"))
 				.willReturn(aResponse()
+						// less delay than max timeout
 						.withFixedDelay(MY_DEAR_TIMEOUT/2)
 						.withStatus(200)
 						.withBody("{\n  \"firstField\" = \"I love JSON\",\n  \"secondField\" = 3\n}")));
@@ -94,12 +113,14 @@ public class RetrofitApacheClientTest {
 		// prepare the server with canned response
 		wireMockRule.stubFor(get(urlMatching("/things/something"))
 				.willReturn(aResponse()
+						// more delay than timeout
 						.withFixedDelay(MY_DEAR_TIMEOUT*2)
 						.withStatus(200)
 						.withBody("{\n  \"firstField\" = \"I love JSON\",\n  \"secondField\" = 3\n}")));
 
 		MyClientGetInterface client = createRetrofitClient(serverUrl);
 
+		// we are sure we will get an error
 		RetrofitError error = null;
 		try {
 			client.getMyObjectOfKey("something");
@@ -107,6 +128,8 @@ public class RetrofitApacheClientTest {
 		} catch (RetrofitError e) {
 			error = e;
 		}
+		
+		// the Retrofit error holds info regarding the type of error
 		assertThat(error).isNotNull();
 		assertThat(error.getKind()).isEqualTo(Kind.NETWORK);
 		assertThat(error.getMessage()).containsIgnoringCase("time").containsIgnoringCase("out");

@@ -33,6 +33,9 @@ public class RetrofitErrorsTest {
 		return restAdapter.create(MyClientGetInterface.class);
 	}
 
+	/**
+	 * An example error handler, with custom errors per HTTP status
+	 */
 	static class MyErrorHandler implements ErrorHandler {
 		@Override
 		public Throwable handleError(RetrofitError cause) {
@@ -58,20 +61,38 @@ public class RetrofitErrorsTest {
 			}
 		}
 	}
-	
+
+	/*
+	 * Some custom exception, imagine these being your business exception, or
+	 * client-related exceptions.
+	 */
 	static class ItemNotFoundException extends RuntimeException{};
 	static class UnexpectedErrorException extends RuntimeException{};
 	static class JsonSerializationException extends RuntimeException{};
 	static class NetworkProblemsException extends RuntimeException{};
 	static class BadRequestException extends RuntimeException{};
 	
+	
+	/**
+	 * A client that not only throws some business exception, but also returns
+	 * {@link Optional}s instead of nulls.
+	 */
 	class MyErrorHandlingClient {
 		private MyClientGetInterface innerClient;
 		
 		public MyErrorHandlingClient(String uri){
 			innerClient = createRetrofitClient(uri);
 		}
-		
+
+		/**
+		 * Returns a an {@link Optional} of {@link MyObject}, exploiting the
+		 * {@link ItemNotFoundException} from the {@link MyErrorHandler}.
+		 * 
+		 * @param identifier
+		 *            the identifier of the requested object.
+		 * @return an {@link Optional} of {@link MyObject}, or
+		 *         {@link Optional#absent()}, if it is not found.
+		 */
 		public Optional<MyObject> getMyObjectOfKey(String identifier){
 			try {
 				return Optional.of(innerClient.getMyObjectOfKey(identifier));
@@ -105,7 +126,11 @@ public class RetrofitErrorsTest {
 	@Test
 	public void shouldGetEmptyValueFor404Response() throws Exception {
 		// prepare the server with canned response
-		wireMockRule.stubFor(get(urlMatching("/things/something")).willReturn(aResponse().withStatus(404)));
+		wireMockRule.stubFor(get(urlMatching("/things/something"))
+					.willReturn(aResponse()
+							// 404 should result in an ItemNotFoundException
+							// and an absent object
+							.withStatus(404)));
 
 		MyErrorHandlingClient client = new MyErrorHandlingClient(serverUrl);
 

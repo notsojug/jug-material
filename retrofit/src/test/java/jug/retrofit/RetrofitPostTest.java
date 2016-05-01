@@ -41,8 +41,12 @@ public class RetrofitPostTest {
 		 * As a retrofit limitation, we cannot have <code>void</code> method,
 		 * but you can return a generic retrofit's {@link Response}, and ignore
 		 * it at runtime.
+		 * <p>
+		 * Or maybe you can modify your API to return the resulting object after
+		 * a POST, so you can return the object in the call.
 		 * 
-		 * @param toAdd the object to add
+		 * @param toAdd
+		 *            the object to add
 		 * @return nothing useful.
 		 */
 		@POST("/things/")

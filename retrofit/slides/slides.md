@@ -18,7 +18,7 @@ Do you remember the last time you had to write a client?
 
  Dependency problems
 
- More code to handle library quirks than to effectively return the correct value or exception
+ More code to handle library quirks than to actually return the correct value or exception
 
 
 ---
@@ -48,8 +48,8 @@ List<Repo> repos = service.listRepos("octocat");
 There is no magic:
 
 ```
-Retrofit retrofit = new Retrofit.Builder()
-    .baseUrl("https://api.github.com/")
+RestAdapter retrofit = new RestAdapter.Builder()
+    .setEndpoint("https://api.github.com/")
     .build();
 
 GitHubService service = retrofit.create(GitHubService.class);
@@ -130,6 +130,10 @@ If you don't specity a client and it finds OkHttp library, it uses that.
 
 ## Compatibility
 Retrofit until version 1.9.0 supports java 6 (yay!)
+
+--
+
+Retrofit uses [Gson](https://github.com/google/gson) for JSON (de)serialization, which is fast enough, and java 6 compatible. But can use [Jackson](https://github.com/square/retrofit/blob/parent-1.9.0/retrofit-converters/jackson/src/main/java/retrofit/converter/JacksonConverter.java), if you rely heavily on its annotations.
 
 ---
 
