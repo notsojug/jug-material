@@ -33,6 +33,12 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
+			<groupId>org.immutables</groupId>
+			<artifactId>func</artifactId>
+			<version>${immutables.version}</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
 			<version>${assertj.version}</version>
