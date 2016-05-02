@@ -17,6 +17,7 @@
 		<module>retrofit</module>
 		<module>demo</module>
 		<module>throwable</module>
+		<module>immutables</module>
 	</modules>
 
 	<properties>
