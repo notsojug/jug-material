@@ -8,7 +8,7 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>jug-throwables</artifactId>
+	<artifactId>jug-immutables</artifactId>
 	<packaging>jar</packaging>
 
 	<properties>
