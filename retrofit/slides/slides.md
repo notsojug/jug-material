@@ -14,9 +14,7 @@ Do you remember the last time you had to write a client?
 
 --
 
- Java compatibility
-
- Dependency problems
+ Dependency problems (Jersey vs RestEasy, anyone?)
 
  More code to handle library quirks than to actually return the correct value or exception
 
