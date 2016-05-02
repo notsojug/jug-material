@@ -27,7 +27,7 @@ public class RetrofitApacheClientIT {
 
 	// the fake server
 	@Rule
-	public WireMockRule wireMockRule = new WireMockRule();
+	public WireMockRule wireMockRule = new WireMockRule(8083);
 	String serverUrl = "http://127.0.0.1:8083";
 
 	private MyClientGetInterface createRetrofitClient(String url) {

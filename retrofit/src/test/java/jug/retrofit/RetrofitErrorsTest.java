@@ -22,7 +22,7 @@ import retrofit.RetrofitError;
 public class RetrofitErrorsTest {
 	// the fake server
 	@Rule
-	public WireMockRule wireMockRule = new WireMockRule();
+	public WireMockRule wireMockRule = new WireMockRule(8084);
 	String serverUrl = "http://127.0.0.1:8084";
 
 	private static MyClientGetInterface createRetrofitClient(String url) {

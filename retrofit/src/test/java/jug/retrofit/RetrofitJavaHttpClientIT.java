@@ -28,7 +28,7 @@ public class RetrofitJavaHttpClientIT {
 
 	// the fake server
 	@Rule
-	public WireMockRule wireMockRule = new WireMockRule();
+	public WireMockRule wireMockRule = new WireMockRule(8082);
 	String serverUrl = "http://127.0.0.1:8082";
 	
 	/**

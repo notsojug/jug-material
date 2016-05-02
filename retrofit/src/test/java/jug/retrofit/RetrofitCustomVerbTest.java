@@ -48,7 +48,7 @@ public class RetrofitCustomVerbTest {
 	}
 	
 	@Rule
-	public WireMockRule wireMockRule = new WireMockRule();
+	public WireMockRule wireMockRule = new WireMockRule(8086);
 	String serverUrl = "http://127.0.0.1:8086";
 	
 	@Test

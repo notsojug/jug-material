@@ -41,7 +41,7 @@ public class RetrofitGetTest {
 	
 	// the fake server
 	@Rule
-	public WireMockRule wireMockRule = new WireMockRule();
+	public WireMockRule wireMockRule = new WireMockRule(8080);
 	String serverUrl = "http://127.0.0.1:8080";
 	
 	/**
