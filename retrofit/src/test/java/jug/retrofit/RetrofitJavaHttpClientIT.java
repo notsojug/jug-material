@@ -29,7 +29,7 @@ public class RetrofitJavaHttpClientIT {
 	// the fake server
 	@Rule
 	public WireMockRule wireMockRule = new WireMockRule();
-	String serverUrl = "http://127.0.0.1:8080";
+	String serverUrl = "http://127.0.0.1:8082";
 	
 	/**
 	 * An extension of {@link UrlConnectionClient} with a set timeout.
