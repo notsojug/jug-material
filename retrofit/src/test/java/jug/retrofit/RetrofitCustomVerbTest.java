@@ -34,6 +34,13 @@ import retrofit.http.RestMethod;
  *
  */
 public class RetrofitCustomVerbTest {
+	
+	/**
+	 * This is a custm HTTP verb (i.e. is not GET,POST, or any other known one).
+	 * <p>
+	 * You can define yours too, if needed.
+	 *
+	 */
 	@Target(METHOD)
 	@Retention(RUNTIME)
 	@RestMethod(value = "SIGN", hasBody = true)
@@ -41,6 +48,9 @@ public class RetrofitCustomVerbTest {
 		String value();
 	}
 	
+	/**
+	 * This is an interface using the custom verb in a method.  
+	 */
 	public static interface MyClientInterface {
 		@SIGN("/documents/")
 		Response signThisThing(@Body MyObject theObject);
@@ -52,8 +62,10 @@ public class RetrofitCustomVerbTest {
 	
 	@Test
 	public void shouldGetGoodResponse() throws Exception {
+		// expect any kind of request
 		wireMockRule.stubFor(any(urlMatching("/documents/"))
 	            .willReturn(aResponse()
+	            	//return a valid http response 
 	                .withStatus(201)));
 		
 		MyClientInterface wrong = createRetrofitClient(MyClientInterface.class);
@@ -64,6 +76,7 @@ public class RetrofitCustomVerbTest {
 
 		assertThat(response.getStatus()).isEqualTo(201);
 
+		// verify that the request was actually forwarded with the custom method.
 		wireMockRule.verify(new RequestPatternBuilder(new RequestMethod("SIGN"), urlEqualTo("/documents/"))
 				.withRequestBody((containing("{\"firstField\":\"yo\",\"secondField\":15}"))));
 	}
@@ -72,7 +85,8 @@ public class RetrofitCustomVerbTest {
 	
 	private <T> T createRetrofitClient(Class<T> iface){
 		RestAdapter restAdapter = new RestAdapter.Builder()
-				// java's url connection does not support custom verbs...
+				// java's url connection does not support custom verbs....
+				// using apache client instead
 				.setClient(new ApacheClient())
 				.setEndpoint(serverUrl)
 				.build();

@@ -34,11 +34,22 @@ import retrofit.http.RestMethod;
  */
 public class RetrofitNonStandardVerbTest {
 	
+	
+	/**
+	 * This interface demonstrates that DELETE method does not allow body
+	 * parameters.
+	 * 
+	 * @see RetrofitNonStandardVerbTest#shouldBreakWithInvalidAnnotation()
+	 */
 	public static interface MyClientInterface_wrong {
 		@DELETE("/things/")
 		Response deleteThisThing(@Body MyObject theObject);
 	}
 	
+	/**
+	 * A customized DELETE method, which allows a body parameter
+	 *
+	 */
 	@Target(METHOD)
 	@Retention(RUNTIME)
 	@RestMethod(value = "DELETE", hasBody = true)
@@ -46,6 +57,10 @@ public class RetrofitNonStandardVerbTest {
 		String value();
 	}
 	
+	/**
+	 * An interface using the customized DELETE method.
+	 *
+	 */
 	public static interface MyClientInterface {
 		@DELETE_WITH_BODY("/things/")
 		Response deleteThisThing(@Body MyObject theObject);
@@ -61,6 +76,7 @@ public class RetrofitNonStandardVerbTest {
 		
 		try {
 			wrong.deleteThisThing(new MyObject());
+			// an invalid interface should break retrofit
 			failBecauseExceptionWasNotThrown(RetrofitError.class);
 		} catch (RetrofitError e) {
 			assertThat(e.getKind()).isEqualTo(Kind.UNEXPECTED);
@@ -72,6 +88,7 @@ public class RetrofitNonStandardVerbTest {
 	
 	@Test
 	public void shouldGetGoodResponse() throws Exception {
+		// expect a delete, return 201
 		wireMockRule.stubFor(delete(urlMatching("/things/"))
 	            .willReturn(aResponse()
 	                .withStatus(201)));
@@ -84,6 +101,7 @@ public class RetrofitNonStandardVerbTest {
 
 		assertThat(response.getStatus()).isEqualTo(201);
 
+		// assert that the DELETE had a body with a JSON
 		wireMockRule.verify(deleteRequestedFor(urlEqualTo("/things/"))
 				.withRequestBody(containing("{\"firstField\":\"yo\",\"secondField\":15}")));
 	}
@@ -92,7 +110,8 @@ public class RetrofitNonStandardVerbTest {
 	
 	private <T> T createRetrofitClient(Class<T> iface){
 		RestAdapter restAdapter = new RestAdapter.Builder()
-				// java's url connection does not support non standard verbs.
+				// java's url connection does not support non standard verbs. 
+				// using apache client instead...
 				.setClient(new ApacheClient())
 				.setEndpoint(serverUrl)
 				.build();

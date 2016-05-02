@@ -18,6 +18,10 @@ import retrofit.ErrorHandler;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 
+/**
+ * In this test we demonstrate the use of custom error handlers in retrofit. 
+ *
+ */
 @SuppressWarnings("serial")
 public class RetrofitErrorsTest {
 	// the fake server
@@ -41,6 +45,7 @@ public class RetrofitErrorsTest {
 		public Throwable handleError(RetrofitError cause) {
 			switch (cause.getKind()) {
 			case CONVERSION:
+				// conversion errors are due to incorrect response-to-object conversion.
 				return new JsonSerializationException();
 			case HTTP: {
 				switch (cause.getResponse().getStatus()) {
@@ -148,6 +153,7 @@ public class RetrofitErrorsTest {
 	public void shouldGetGetJsonSerializationExceptionForGarbageResponse() throws Exception {
 		// prepare the server with canned response
 		wireMockRule.stubFor(get(urlMatching("/things/something")).willReturn(aResponse().withStatus(200)
+				// this obviously does not represent any valid JSON response
 				.withBody("{\n  \"yabbadabbadoo")));
 
 		MyErrorHandlingClient client = new MyErrorHandlingClient(serverUrl);

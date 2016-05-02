@@ -23,14 +23,11 @@ import retrofit.client.Response;
 import retrofit.http.Body;
 import retrofit.http.POST;
 
+/**
+ * A very simple sample of retrofit's features. This time for a POST request.
+ *
+ */
 public class RetrofitPostTest {
-	
-	// Google's json converter (it's used internally in retrofit).
-	Gson gson = new Gson();
-	
-	@Rule
-	public WireMockRule wireMockRule = new WireMockRule(8081);
-	String serverUrl = "http://127.0.0.1:8081";
 	
 	/**
 	 * This is a very simple interface for a client.
@@ -52,6 +49,13 @@ public class RetrofitPostTest {
 		@POST("/things/")
 		Response saveMyObjectToIdentifier(@Body MyObject toAdd);
 	}
+	
+	// Google's json converter (it's used internally in retrofit).
+	Gson gson = new Gson();
+	
+	@Rule
+	public WireMockRule wireMockRule = new WireMockRule(8081);
+	String serverUrl = "http://127.0.0.1:8081";
 
 	
 	/**
