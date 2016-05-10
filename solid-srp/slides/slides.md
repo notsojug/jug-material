@@ -32,9 +32,9 @@ Treat them as guidelines
 
 # Single responsibility principle
 
-- To be read: a class should have a single reason to change.
-- A class should do one thing
-- Opposite: god object
+- To be read: a class should have a single **reason** to change.
+- A class should do one thing => Separation of Concerns
+- Opposite: God object
 
 Thus classes should be:
 - small, easy to read
@@ -45,11 +45,42 @@ Thus classes should be:
 
 # Example
 
+
+---
+
+# Pros and Cons
+
+Pros:
+
+- Class names represent the correct behaviour 
+- Classes are easier to read and test
+
+Cons:
+
+- A lot of classes
+- Harder to grasp the big picture
+
+---
+
+# Is it only for programming?
+
+Have you ever heard about microservices?
+
+[http://martinfowler.com/articles/microservices.html]()
+ 
+???
+
+Fowler's reasoning is built around the concept of Bounded Context, which is roughly the same as SRP/Separation of concerns  
+
+
 ---
 
 ## Links:
 
 * SOLID  <https://en.wikipedia.org/w/index.php?title=SOLID_(object-oriented_design)>
+* Inspiration for this slides: [http://www.slideshare.net/kindblad/the-sngle-responsibility-principle]()
+* An article from Martin Fowler about microservices 
+[http://martinfowler.com/articles/microservices.html]()
 
 ---
 
