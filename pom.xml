@@ -19,6 +19,7 @@
 		<module>throwable</module>
 		<module>immutables</module>
 		<module>solid-srp</module>
+		<module>javaee-inject</module>
 	</modules>
 
 	<properties>
