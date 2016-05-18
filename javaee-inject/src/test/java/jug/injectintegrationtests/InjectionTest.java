@@ -1,7 +1,6 @@
 package jug.injectintegrationtests;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
 
 import javax.inject.Inject;
 
