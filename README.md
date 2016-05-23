@@ -13,6 +13,10 @@ Each module represents a talk of the JUG
 - Optional: a design pattern for values that may be not present (towards functional programming)
 - Throwable: a talk on how (not) to use exceptions and related subjects
 - Retrofit: an awesome library to build type-safe, easy-to-read http clients
+- Immutables: immutable data is king, and a framework helps us build immutable objects easily
+- SOLID-SRP: an exploration of the Single Responsibility Principle with an example
+- SOLID-IOC: a tour of Inversion of Control/ Dependency Inversion /Hollywood Principle
+- JavaEE-Inject: an introduction for dependency injection in a Java EE container
 - Lambda: an exploration of the lambdas in the java programming language
 
 ## Contributing
