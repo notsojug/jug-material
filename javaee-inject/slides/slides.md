@@ -145,6 +145,7 @@ Or just empty, unless you need some (interesting) advanced features.
 * Java EE 6 [https://docs.oracle.com/javaee/6/tutorial/doc/](see here the tutorial)
 * JSR 299 [https://jcp.org/en/jsr/detail?id=299]()
 * JSR 330 [https://jcp.org/en/jsr/detail?id=330]()
+* Weld SE [https://docs.jboss.org/weld/reference/latest-master/en-US/html/environments.html#weld-se]
 * Guice [https://github.com/google/guice]()
 * Dagger [https://github.com/square/dagger]()
 * Dagger 2 [https://github.com/google/dagger]()
