@@ -20,6 +20,7 @@
 		<module>immutables</module>
 		<module>solid-srp</module>
 		<module>javaee-inject</module>
+		<module>solid-ioc</module>
 	</modules>
 
 	<properties>
