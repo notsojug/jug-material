@@ -132,11 +132,34 @@ Or just empty, unless you need some (interesting) advanced features.
 
 ---
 
+# What can I @Inject ?
+
+- Implementations of interfaces
+- Classes
+- Primitives
+- Events' entrypoints (to fire events)
+- Resources (sessions, EJBs, datasources)
+
+
+???
+
+You don't need to create interfaces for all your classes, you can make a tradeoff and inject classes directly.  
+
+---
+
 # Dependency Injection outside a Java EE container
 
 - Use Weld SE in a standalone jar (same workflow as in Java EE)
 - Use Guice (slightly different workflow than Java EE)
 - Use Guice/Dagger 2 (and ButterKnife) in Android
+
+---
+
+# Dependency Injection in tests
+
+- With arquillian
+- With guice
+- With EasyMock (for most use cases) => no setup!
 
 ---
 
