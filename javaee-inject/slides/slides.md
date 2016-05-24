@@ -1,6 +1,6 @@
 class: center, middle
 
-# (Container) Dependency Injection
+# (Context/Container) Dependency Injection
 
 Or: Dependency inversion principle applied easily with the aid of the container.
 
@@ -144,6 +144,8 @@ Or just empty, unless you need some (interesting) advanced features.
 ???
 
 You don't need to create interfaces for all your classes, you can make a tradeoff and inject classes directly.  
+
+DEMO
 
 ---
 

@@ -27,6 +27,7 @@ public class InjectionTest {
 	@Test
 	public void shouldHaveAnInstance() throws Exception {
 		assertThat(userManager).isNotNull();
+		assertThat(database).isNotNull();
 	}
 	
 	@Test
