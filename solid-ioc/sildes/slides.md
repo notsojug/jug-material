@@ -2,7 +2,7 @@ class: center, middle
 
 # Dependency Injection or DI
 
-> Formerly known as Inversion of Control and the associated _Hollywood Principle_: "Don't call us, we'll call you."
+> Formerly known as **Inversion of Control** and the associated **Hollywood Principle**: _"Don't call us, we'll call you."_
 
 ---
 
@@ -19,7 +19,7 @@ When applying DI:
 
 ---
 
-# Originally called Inversion of Control (IoC)
+# Originally: Inversion of Control (IoC)
 
 Because the normal control sequence would be:
 * the object finds the objects it depends on by itself and then **calls them**.
@@ -34,13 +34,13 @@ This also illustrates the **Hollywood Principle** at work:
 
 # Wondering why it's a big deal?
 
-## It delivers a key advantage: loose coupling
+### It delivers a key advantage: loose coupling
 
 * objects can be added and tested independently of other objects
 * they don't depend on anything other than what you pass them
 * it's possible to test the object in isolation passing it mock objects
 
-## When using traditional dependencies
+### When using traditional dependencies
 
 * to test an object you have to create an environment where:
   * all of its dependencies exist
@@ -58,6 +58,11 @@ For entire applications, you frequently want a framework to manage the dependenc
 
 * **Guice/Spring**: [JSR 330: Dependency Injection for Java](https://jcp.org/en/jsr/detail?id=330)
 * **Weld**: [JSR 299: Contexts and Dependency Injection for the Java EE platform](https://jcp.org/en/jsr/detail?id=299)
+
+???
+**Q:** What is a Java Specification Request (JSR)?
+
+**A:** A JSR is a Java Specification Request. This is the document submitted to the Program Management Office by one or more members of the Java Community Process to propose the development of a new specification or significant revision to an existing specification.
 
 ---
 
@@ -89,44 +94,66 @@ And many more to discover!
 
 ---
 
-# Back to SOLID
+# Back to **SOLID**
 
-1. High-level modules should not depend on low-level modules. Both should depend on abstractions.
-2. Abstractions should not depend on details. Details should depend on abstractions.
+1. High-level modules should not depend on low-level modules.
+2. Abstractions should not depend on details.
 
 Implications in an Object Oriented program:
 * All member variables in a class must be interfaces or abstracts.
 * All concrete class packages must connect only through interface or abstract class packages.
 * No class should derive from a concrete class.
 * No method should override an implemented method.
-* All variable instantiation requires the use of a Dependency Injection framework.
+* All variable instantiation requires the use of a (_C_)DI framework.
+
+???
+Both should depend on abstractions. Details should depend on abstractions.
+
+---
+
+class: center
+
+# What if... Function Programming?
+
+--
+
+<img src="rocket.png" alt="Rocket" style="width: 300px;"/>
 
 ---
 
 # What if... Function Programming?
 
-Concepts:
+.left-column[Concepts:
 * Higher order functions
 * Immutable data
 * Pure functions
 
-Let's see **Higher Order Functions**!
+Let's see **Higher Order Functions**!]
 
-The same way you can create and pass around objects in an object-oriented language, in a functional language you can create and pass around functions.
+--
 
-> A function can be created and then assigned to a variable, or passed as an argument of another function.
+.right-column[
+The same way you can **create and pass around objects** in an object-oriented language, in a functional language you can **create and pass around functions**.
+
+> A function can be created and then assigned to a variable, or passed as an argument of another function.]
 
 ---
 
 # What if... Function Programming?
 
-A higher order function is one that can accept another function as its argument
+A higher order function is one that can accept another function as its argument: g(x) → f(g(x))
 
 This is a very powerful concept which allows for a natural implementation of **inversion of control**, which is one of the most important design principles in software development.
 
-### Immutable data: do you remember?
+--
 
-### Pure Functions: more on that later
+### **Immutable data**: [do you remember?](https://github.com/civitz/jug-material/tree/master/immutables)
+
+--
+
+### **Pure Functions**: more on that later...
+
+--
 
 **This and more in the next episode!**
 
@@ -145,3 +172,7 @@ This is a very powerful concept which allows for a natural implementation of **i
 class: center, middle
 
 # Questions
+
+--
+
+What is [Java EE](https://en.wikipedia.org/wiki/Java_Platform,_Enterprise_Edition)?
