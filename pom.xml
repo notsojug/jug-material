@@ -21,6 +21,7 @@
 		<module>solid-srp</module>
 		<module>javaee-inject</module>
 		<module>solid-ioc</module>
+		<module>cdi-scopes</module>
 	</modules>
 
 	<properties>
