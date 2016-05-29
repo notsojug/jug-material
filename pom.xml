@@ -22,6 +22,7 @@
 		<module>javaee-inject</module>
 		<module>solid-ioc</module>
 		<module>cdi-scopes</module>
+		<module>javaee-more-concepts</module>
 	</modules>
 
 	<properties>
