@@ -1,14 +1,15 @@
 class: center, middle
 
-# (Context/Container) Dependency Injection
+# CDI: more goodies
 
-Or: Dependency inversion principle applied easily with the aid of the container.
+To `@Inject`, and beyond...
 
 ---
 
-# Last time we did the following:
+# Last time we did this:
 
 ```
+@Inject
 public UserManager(
 		ConfirmationEmailSender confirmationEmailSender, 
 		DbAddUserCommand dbAddUserCommand,
@@ -24,59 +25,62 @@ public UserManager(
 
 ---
 
-### Chef Tony: _Remember what your granny used to do?_
+# And this:
 
 ```
-Database db = new Database();
-UserManager userManager = new UserManager(
-		new ConfirmationEmailSender(), new DbAddUserCommand(db),
-		new DbDeleteUserCommand(db), new DbGetUserCommand(db));
-ServiceLocator.registerUserManager(userManager);
-		
-// somewhere else
-boolean someMethod(String someParam){
-	UserManager um = ServiceLocator.findUserManager();
-	um.getUser(0);
-	return true;
-}
+@Inject
+VariousConstructors standard;
 
+@Inject
+@Configured
+VariousConstructors configured;
 ```
-
---
-
-...boring
 
 ---
 
-# No more stress 
+# And this:
 
 ```
-@Inject // <-- here comes the magic
-public UserManager(
-		ConfirmationEmailSender confirmationEmailSender, 
-		DbAddUserCommand dbAddUserCommand,
-		DbDeleteUserCommand dbDeleteUserCommand,
-		DbGetUserCommand dbGetUserCommand) {
-	super();
-	this.confirmationEmailSender = confirmationEmailSender;
-	this.dbAddUserCommand = dbAddUserCommand;
-	this.dbDeleteUserCommand = dbDeleteUserCommand;
-	this.dbGetUserCommand = dbGetUserCommand;
+@Produces
+OnlyWithFactory getOnlyWithFactory(){
+	OnlyWithFactory instance = OnlyWithFactory.create("42");
+	return instance;
 }
 ```
 
 ---
 
-# No more stress
+### Alternative implementations: starting point
 
 ```
-public class SomewhereElse{
-	@Inject // <-- moar magic
-	UserManager userManager;
+public interface AddUserCommand {
+	int addUser(String email, String password);
+}
+
+public interface DeleteUserCommand {
+	void deleteUser(int userId);
+}
+public interface GetUserCommand {
+	User getUser(int userId);
+}
+```
+
+---
+### Alternative implementations: starting point
+
+```
+public class DbGetUserCommand implements GetUserCommand {
+	private final Database database;
+
+	@Inject
+	public DbGetUserCommand(Database database) {
+		this.database = database;
+	}
 	
-	boolean someMethod(String someParam){
-		userManager.getUser(0);
-		return true;
+	@Override
+	public User getUser(int userId) {
+		return database.querySingle(User.class, 
+			"Select * from users where userId=?", userId);
 	}
 }
 
@@ -84,97 +88,218 @@ public class SomewhereElse{
 
 ---
 
-# What is this sorcery?
+# Alternative implementations
 
-- This "sorcery" is standard in Java EE (6 onward).
-- JSR 299, JSR 330
-- Inspired by Google's Guice, a dependency injection library
+What if:
 
---
-
-So important that the whole enterprise framework uses it throughout the code to do practially everything, from JAX-RS, to events, to `<insert function here>`.   
-
-???
-
-The specification is acqually broader, it includes a plethora of functionalities, like interceptors, alternative beans, decorators, events...
+- you need a different implementation of a class for a specific client
+- database is down and you need to test the app
+- you are implementing a new version of a class, but time is running out and you need to fall back to default
 
 ---
 
-# How can I enable it?
+# Alternative implementations
 
-You just need a file named `beans.xml` in the `META-INF`/`WEB-INF` directory of your archive.
-
-The content should be:
+Fear no more:
 
 ```
-<?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://java.sun.com/xml/ns/javaee"
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
-      http://java.sun.com/xml/ns/javaee/beans_1_0.xsd">
-</beans>
-``` 
+@Alternative
+public class InMemoryUserRepo implements 
+						AddUserCommand, 
+						DeleteUserCommand, 
+						GetUserCommand {
+	// ...
+}
 
-Or just empty, unless you need some (interesting) advanced features.
 
----
-
-# Where can I use it?
-
-- Rest endpoints
-- Events 
-- JMS queues
-- combined with EJBs (handle with care)
+```
 
 --
 
-...all you need is an entry point, really...
+Container ignores it, unless you specify it in `beans.xml`
+
 
 ---
 
-# What can I @Inject ?
+# Alternative implementations
 
-- Implementations of interfaces
-- Classes
-- Primitives
-- Events' entrypoints (to fire events)
-- Resources (sessions, EJBs, datasources)
+How to activate:
 
-
-???
-
-You don't need to create interfaces for all your classes, you can make a tradeoff and inject classes directly.  
-
-DEMO
+```xml
+<beans ... >
+    <alternatives>
+        <class>jug.alternative.memory.InMemoryUserRepo</class>
+    </alternatives>
+</beans>
+```
 
 ---
 
-# Dependency Injection outside a Java EE container
+### Interceptors: Repeated cross-functional behaviours
 
-- Use Weld SE in a standalone jar (same workflow as in Java EE)
-- Use Guice (slightly different workflow than Java EE)
-- Use Guice/Dagger 2 (and ButterKnife) in Android
+
+> An interceptor is a class used to interpose in method invocations or lifecycle events that occur in an associated target class. The interceptor performs tasks, such as logging or auditing, that are separate from the business logic of the application and are repeated often within an application.
 
 ---
 
-# Dependency Injection in tests
+### Interceptors: how to
 
-- With arquillian
-- With guice
-- With EasyMock (for most use cases) => no setup!
+The annotation:
+
+```
+@Inherited
+@Target({ ElementType.TYPE, ElementType.METHOD, ElementType.FIELD })
+@Retention(RetentionPolicy.RUNTIME)
+@InterceptorBinding
+public @interface Logged {
+	
+}
+```
+---
+
+### Interceptors: how to
+
+The class:
+
+```
+public class ClassToBeLogged {
+
+	@Logged
+	public String someMethod(String aParam, int anotherParam) {
+		return "been there, done that";
+	}
+}
+```
+---
+
+### Interceptors: how to
+
+```
+@Logged
+@Interceptor
+public class LoggedInterceptor implements Serializable {
+	@AroundInvoke
+	public Object logMyCall(InvocationContext context) 
+		throws Exception {
+		Method method = context.getMethod();
+		// do what you need 
+		System.out.println("called " + method.getName() + 
+			" on class " + method.getDeclaringClass()+ 
+			" params=" + printParams(context.getParameters()));
+		
+		// invoke the method or let the next interceptor do its work
+		return context.proceed();
+	}
+}
+```
+---
+
+### Interceptors: how to
+
+How to activate:
+
+```xml
+<beans ... >
+    <interceptors>
+        <class>jug.interceptor.LoggedInterceptor</class>
+    </interceptors>
+</beans>
+```
+---
+
+### Extend functionality without inheritance
+
+
+--
+
+.center[
+AKA: decorators
+]
+
+---
+
+# Decorators
+
+Example interface
+
+```
+public interface Client {
+
+	String getValueFromTheInternet(String id);
+
+	String putValueToTheInternet(String id, String value);
+}
+```
+
+---
+
+# Decorators
+
+Example implementation:
+
+```
+public class SomeClient implements Client {
+	@Override
+	public String getValueFromTheInternet(String id){
+		return "42"; 
+	}
+
+	@Override
+	public String putValueToTheInternet(String id, String value){
+		return "done";
+	}
+}
+```
+
+
+
+---
+
+# Decorators
+
+The decorator:
+
+```
+@Decorator
+public abstract class SomeDelayedClient implements Client{
+
+	@Inject @Delegate @Any
+	Client inner;
+
+	@Override
+	public String getValueFromTheInternet(String id) {
+		sleepFiveSecondsIfUserIsYo(id);
+		return "delayed=" + inner.getValueFromTheInternet(id);
+	}
+}
+```
+---
+
+# Decorators
+
+How to activate:
+```xml
+<beans ... >
+    <decorators>
+        <class>jug.decorator.SomeDelayedClient</class>
+    </decorators>
+</beans>
+```
+---
+
+
+# Even more goodies, not covered here
+
+- CDI events: fire-and-forget decoupled computation, like JMS without persistence.
+	* container-fired events and how to use them.
+- Specialized instances: like @Alternative, but always-on.
+- Stereotypes: group scope and qualifiers to a single annotation.
 
 ---
 
 ## Links:
 
 * Java EE 6 [https://docs.oracle.com/javaee/6/tutorial/doc/](see here the tutorial)
-* JSR 299 [https://jcp.org/en/jsr/detail?id=299]()
-* JSR 330 [https://jcp.org/en/jsr/detail?id=330]()
-* Weld SE [https://docs.jboss.org/weld/reference/latest-master/en-US/html/environments.html#weld-se]
-* Guice [https://github.com/google/guice]()
-* Dagger [https://github.com/square/dagger]()
-* Dagger 2 [https://github.com/google/dagger]()
-* ButterKnife [https://github.com/JakeWharton/butterknife]()
 
 ---
 

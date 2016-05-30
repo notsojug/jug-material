@@ -17,7 +17,11 @@ public abstract class SomeDelayedClient implements Client{
 
 	@Override
 	public String getValueFromTheInternet(String id) {
+		sleepFiveSecondsIfUserIsYo(id);
+		return "delayed=" + inner.getValueFromTheInternet(id);
+	}
 
+	private void sleepFiveSecondsIfUserIsYo(String id) {
 		if("yo".equals(id)){
 			try {
 				Thread.sleep(5000);
@@ -26,7 +30,5 @@ public abstract class SomeDelayedClient implements Client{
 				throw Throwables.propagate(e);
 			}
 		}
-		
-		return "delayed=" + inner.getValueFromTheInternet(id);
 	}
 }
