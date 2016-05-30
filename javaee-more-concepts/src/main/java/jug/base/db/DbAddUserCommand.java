@@ -13,7 +13,8 @@ public class DbAddUserCommand implements AddUserCommand {
 	}
 	
 	@Override
-	public void addUser(String email, String password) {
+	public int addUser(String email, String password) {
 		database.execute("insert into user(email, password) values (?, ?)", email, password);
+		return 0;
 	}
 }

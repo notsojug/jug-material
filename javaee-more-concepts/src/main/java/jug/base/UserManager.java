@@ -1,5 +1,7 @@
 package jug.base;
 
+import java.util.Optional;
+
 import javax.inject.Inject;
 
 import com.google.common.base.Preconditions;
@@ -21,16 +23,17 @@ public class UserManager {
 		this.getUserCommand = dbGetUserCommand;
 	}
 
-	public User getUser(int userId) {
-		return getUserCommand.getUser(userId);
+	public Optional<User> getUser(int userId) {
+		return Optional.ofNullable(getUserCommand.getUser(userId));
 	}
 
-	public void registerUser(String email, String password) {
-		Preconditions.checkArgument(!Strings.isNullOrEmpty(email) && !email.contains("@"));
+	public int registerUser(String email, String password) {
+		Preconditions.checkArgument(!Strings.isNullOrEmpty(email) && email.contains("@"));
 		Preconditions.checkArgument(!Strings.isNullOrEmpty(password));
 
-		addUserCommand.addUser(email, password);
+		int userId = addUserCommand.addUser(email, password);
 		confirmationEmailSender.send(email);
+		return userId;
 	}
 
 	public void deleteUser(int userId) {

@@ -82,8 +82,11 @@
 					</execution>
 				</executions>
 				<configuration>
+					<generateAssertions>true</generateAssertions>
 					<packages>
 						<param>jug.base</param>
+						<param>jug.base.db</param>
+						<param>jug.alternative.memory</param>
 					</packages>
 				</configuration>
 			</plugin>

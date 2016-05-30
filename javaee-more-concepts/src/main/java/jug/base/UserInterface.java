@@ -3,8 +3,11 @@ package jug.base;
 import org.immutables.value.Value;
 
 @Value.Immutable
-@Value.Style(typeAbstract="*Interface", typeImmutable="*")
+@Value.Style(typeAbstract="*Interface", typeImmutable="*", allParameters=true)
 public interface UserInterface {
-	@Value.Parameter
-	String userId();
+	int userId();
+	
+	String email();
+	
+	String passwordHash();
 }
