@@ -1,9 +1,12 @@
 package jug.lambda;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.*;
 
 import java.util.List;
+import java.util.function.Function;
 
+import org.assertj.core.api.Condition;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,7 +37,8 @@ public class MethodReferenceTest {
 	@Test
 	public void shouldFilterAndMultiplyByTwo() throws Exception {
 		List<Integer> filtered = ListUtils.filterList(integers, MethodReferenceTest::isEven);
-		List<Integer> tranformed = ListUtils.transformList(filtered, MethodReferenceTest::multiplyByTwo);
+		Function<Integer, Integer> function = MethodReferenceTest::multiplyByTwo;
+		List<Integer> tranformed = ListUtils.transformList(filtered, function);
 		assertThat(tranformed).containsExactlyInAnyOrder(16, 20);
 	}
 
@@ -42,6 +46,13 @@ public class MethodReferenceTest {
 	public void shouldConvertToString() throws Exception {
 		List<String> transformed = ListUtils.transformList(integers, Object::toString);
 		assertThat(transformed).contains("1", "5");
+	}
+	
+	@Test
+	public void shouldProduceAUselessList() throws Exception {
+		Function<Integer, Boolean> function = integers::contains;
+		List<Boolean> transformList = ListUtils.transformList(integers, function);
+		assertThat(transformList).are(new Condition<>(t->t==true, "All values should be true"));
 	}
 
 	// @Test
