@@ -103,7 +103,7 @@ But the body has only one statement, can we do better?
 
 # Functional interface
 
-What if we could omit the syntactic of a function?
+What if we could omit the syntax of a code block?
 
 ```
 List<Integer> integers = Lists.newArrayList(1, 5, 7, 8, 10);
