@@ -19,6 +19,7 @@ Each module represents a talk of the JUG
 - JavaEE-Inject: an introduction for dependency injection in a Java EE container
 - JavaEE-more concepts: advanced concepts in the java EE spec
 - Lambda: an exploration of the lambdas in the java programming language
+- Streams: the stream API from java 8
 
 ## Contributing
 

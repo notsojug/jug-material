@@ -23,6 +23,7 @@
 		<module>solid-ioc</module>
 		<module>cdi-scopes</module>
 		<module>javaee-more-concepts</module>
+		<module>streams</module>
 	</modules>
 
 	<properties>
