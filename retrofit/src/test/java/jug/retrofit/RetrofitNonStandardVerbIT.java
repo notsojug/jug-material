@@ -32,14 +32,14 @@ import retrofit.http.RestMethod;
  * We want to test a DELETE http request, but with a form in it.
  *
  */
-public class RetrofitNonStandardVerbTest {
+public class RetrofitNonStandardVerbIT {
 	
 	
 	/**
 	 * This interface demonstrates that DELETE method does not allow body
 	 * parameters.
 	 * 
-	 * @see RetrofitNonStandardVerbTest#shouldBreakWithInvalidAnnotation()
+	 * @see RetrofitNonStandardVerbIT#shouldBreakWithInvalidAnnotation()
 	 */
 	public static interface MyClientInterface_wrong {
 		@DELETE("/things/")

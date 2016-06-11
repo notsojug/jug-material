@@ -27,7 +27,7 @@ import retrofit.http.POST;
  * A very simple sample of retrofit's features. This time for a POST request.
  *
  */
-public class RetrofitPostTest {
+public class RetrofitPostIT {
 	
 	/**
 	 * This is a very simple interface for a client.

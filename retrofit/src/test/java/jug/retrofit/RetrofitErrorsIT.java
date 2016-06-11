@@ -23,7 +23,7 @@ import retrofit.RetrofitError;
  *
  */
 @SuppressWarnings("serial")
-public class RetrofitErrorsTest {
+public class RetrofitErrorsIT {
 	// the fake server
 	@Rule
 	public WireMockRule wireMockRule = new WireMockRule(9084);

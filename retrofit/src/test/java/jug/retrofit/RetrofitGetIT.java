@@ -21,7 +21,7 @@ import retrofit.http.Path;
  * A very simple sample of retrofit's features.
  *
  */
-public class RetrofitGetTest {
+public class RetrofitGetIT {
 	
 	/**
 	 * This is a very simple interface for a client.

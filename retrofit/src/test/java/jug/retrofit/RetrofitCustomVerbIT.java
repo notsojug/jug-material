@@ -33,7 +33,7 @@ import retrofit.http.RestMethod;
  * And don't ever think about putting this in production. 
  *
  */
-public class RetrofitCustomVerbTest {
+public class RetrofitCustomVerbIT {
 	
 	/**
 	 * This is a custm HTTP verb (i.e. is not GET,POST, or any other known one).
