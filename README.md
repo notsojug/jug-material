@@ -17,6 +17,7 @@ Each module represents a talk of the JUG
 - SOLID-SRP: an exploration of the Single Responsibility Principle with an example
 - SOLID-IOC: a tour of Inversion of Control/ Dependency Inversion /Hollywood Principle
 - JavaEE-Inject: an introduction for dependency injection in a Java EE container
+- JavaEE-more concepts: advanced concepts in the java EE spec
 - Lambda: an exploration of the lambdas in the java programming language
 
 ## Contributing
