@@ -2,11 +2,19 @@ package jug.streams;
 
 import static jug.streams.ListUtils.list;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -130,5 +138,51 @@ public class StreamBasicsTest {
 		boolean allMatch = integers.stream().allMatch(x -> x < 100);
 
 		assertThat(allMatch).isTrue();
+	}
+	
+	@Test
+	public void distinct_shouldContainOnlyUniqueNumbers() throws Exception {
+		 Iterator<Integer> objects = Stream.of(1, 5, 5, 8, 8)
+			.distinct()
+			.iterator(); // [1, 5, 8]
+		
+		assertThat(objects).contains(1,5,8);
+	}
+	
+	@Test
+	public void sorted_shouldReorderElements() throws Exception {
+		Iterator<Integer> iterator = Stream.of(8, 1, 2, 6)
+			.sorted()
+			.iterator();
+		assertThat(iterator).containsExactly(1,2,6,8);
+	}
+	
+	@Test
+	public void reduce_sumElements() throws Exception {
+		Optional<Integer> simpleSum = integers.stream()
+			.reduce((x,y)->x+y);
+		// why optional? stream may be empty
+		assertThat(simpleSum).hasValue(31);
+	}
+	
+	@Test
+	public void reduce_sumElementsWithInitialValue() throws Exception {
+		Integer simpleSum = integers.stream()
+			.reduce(0, (x,y)->x+y);
+		// stream may be empty but we have a neutral element
+		assertThat(simpleSum).isEqualTo(31);
+	}
+	
+	@Test
+	public void reduce_reduceToList() throws Exception {
+		 ArrayList<Integer> reduced = integers.stream()
+				// start from initial value
+				 .reduce(new ArrayList<Integer>(),  
+				// combine next element of the stream
+				 (x, y) -> { x.add(y); return x; }, 
+				// combine two values
+				 (l1, l2) -> { l1.addAll(l2); return l1; });
+
+		assertThat(reduced).containsOnlyElementsOf(integers);
 	}
 }
