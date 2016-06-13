@@ -124,4 +124,11 @@ public class StreamBasicsTest {
 		// elements.
 		assertThat(limited).hasSize(5);
 	}
+	
+	@Test
+	public void allMatch_allIntegersShouldSatisfyPredicate() throws Exception {
+		boolean allMatch = integers.stream().allMatch(x -> x < 100);
+
+		assertThat(allMatch).isTrue();
+	}
 }
