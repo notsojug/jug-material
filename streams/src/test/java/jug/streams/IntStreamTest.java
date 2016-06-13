@@ -1,10 +1,12 @@
 package jug.streams;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.*;
 
 import java.util.IntSummaryStatistics;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.assertj.core.data.Offset;
 import org.junit.Test;
@@ -43,6 +45,15 @@ public class IntStreamTest {
 			.sum();
 		
 		assertThat(sum).isEqualByComparingTo(5050);
+	}
+	
+	@Test
+	public void flatMap_shouldGenerateCorrectNumberOfElements() throws Exception {
+		long count = Stream.of(1, 5, 7, 8, 10)
+			.flatMap(x -> IntStream.range(1, x).boxed())
+			.count();
+		
+		assertThat(count).isEqualTo(26);
 	}
 }
 
