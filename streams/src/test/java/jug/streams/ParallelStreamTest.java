@@ -47,8 +47,11 @@ public class ParallelStreamTest {
 		 * predicate
 		 */
 		OptionalInt first = IntStream.range(1, 100)
+				.parallel()
 				.filter(x -> x % 5 == 0)
 				.findFirst();
+		
+		// findFirst preserves the order
 		assertThat(first).isNotEmpty().hasValue(5);
 	}
 	

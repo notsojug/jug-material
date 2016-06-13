@@ -292,13 +292,80 @@ List<Integer> list = Stream
 ```
 
 ---
+### Terminal operations: collect
+
+```
+Map<Integer, List<String>> collect = Stream
+	.of("Never","gonna","give","you","up")
+	.collect(Collectors.groupingBy(x -> ((String)x).length()));
+// {2=[up], 3=[you], 4=[give], 5=[Never, gonna]}
+```
+---
+### Terminal operations: forEach
+
+`forEach` accepts a consumer for the stream.
+It is called until the stream ends.
+
+```
+Stream.of(1, 5, 7, 8, 10)
+  .forEach(x -> System.out.println(x)); // void
+```
+
+---
+### Terminal operations: noneMatch/allMatch
+
+`allMatch` accepts a predicate for an element of a stream.
+Returns `true` if all the elements satisfy the predicate.
+
+It is short-circuit: the first non-matching element causes 
+the stream to stop consuming input.
+
+```
+boolean result = Stream.of(1, 5, 7, 8, 10)
+  .allMatch(x -> x < 100); // true
+  
+```
+
+`noneMatch` is the opposite: returns `true` if none of the
+elements matches the predicate. 
+
+---
+### Terminal operations: findFirst/findAny
+
+`findFirst` accepts a predicate for an element of a stream.
+Returns the first matching element of a stream, or Optional.empty()
+if none is found (or stream is empty)
+
+```
+Stream.of(1, 5, 7, 8, 10)
+  .findFirst(x -> x % 2 == 0); // Optional.of(8)
+```
+
+`findAny` is the same, except it is not guaranteed that 
+the returned element is the earliest found in the original list.
+This is valid for streams that are processed not in-order.
+
+---
+# Parallel streams
+
+If you use the API, you will notice some `parallelStream` or `parallel` methods:
+they are used to compute the stream in a parallel manner.
+
+Be careful:
+- synchronization issues if not used correctly
+- defaults to (# processors - 1) threads
+- don't use them in a container (for reason above)
+
+You can find some examples in the `ParallelStreamTest` class. 
+
+---
 
 # Caveats
 
 - filter early, compute as late as possible 
 - infinite streams/subtle infinite streams: use limit accordingly
 - skip/limit order
-- streams cannot be reused
+- streams cannot be reused (see examples)
 - don't modify the initial collection in the pipeline
 - don't forget to call a terminal operation
 
