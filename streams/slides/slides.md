@@ -286,7 +286,7 @@ List<Integer> list = Stream
 Or
 
 ```
-List<Integer> list = Stream
+Map<Boolean, List<Integer>> partitioned = Stream
   .of(1, 5, 7, 8, 10)
   .collect(Collectors.partitioningBy(x -> x % 2 == 0));
 ```
@@ -378,6 +378,7 @@ You can find some examples in the `ParallelStreamTest` class.
 * 10 mistakes to avoid ([jOOQ blog](https://blog.jooq.org/2014/06/13/java-8-friday-10-subtle-mistakes-when-using-the-streams-api/))
 * Streams in java8 ([Oracle](http://www.oracle.com/technetwork/articles/java/ma14-java-se-8-streams-2177646.html))
 * What's wrong with java8 ([Dzone](https://dzone.com/articles/whats-wrong-java-8-part-iii))
+* On the Collection Pipeline ([Martin Fowler's blog](http://martinfowler.com/articles/collection-pipeline/))
 
 ---
 
