@@ -20,6 +20,8 @@ Each module represents a talk of the JUG
 - JavaEE-more concepts: advanced concepts in the java EE spec
 - Lambda: an exploration of the lambdas in the java programming language
 - Streams: the stream API from java 8
+- JAX-RS: Java API for RESTful Web Services in JavaEE 6
+- Monads: a bit of functional programming in Java 8
 
 ## Contributing
 

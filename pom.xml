@@ -25,6 +25,7 @@
 		<module>javaee-more-concepts</module>
 		<module>streams</module>
 		<module>jaxrs</module>
+		<module>monad</module>
 	</modules>
 
 	<properties>
