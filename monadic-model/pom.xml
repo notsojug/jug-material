@@ -32,6 +32,12 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
+			<groupId>org.immutables</groupId>
+			<artifactId>serial</artifactId>
+			<version>${immutables.version}</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
 			<groupId>io.javaslang</groupId>
 			<artifactId>javaslang</artifactId>
 			<version>${javaslang.version}</version>
