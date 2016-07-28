@@ -354,13 +354,9 @@ Now we have the functional superpowers, we can modify our models...
 
 ## Links:
 
-* https://www.youtube.com/watch?v=SN_hqTn4N6Y
-* https://bruceeckel.github.io/2015/10/17/are-java-8-lambdas-closures/
-* http://www.nurkiewicz.com/2016/06/functor-and-monad-examples-in-plain-java.html
-* http://nazarii.bardiuk.com/java-monad/
+* http://www.slideshare.net/mariofusco/from-object-oriented-to-functional-domain-modeling
 * http://www.javaslang.io/
 * http://www.javaslang.io/javaslang-docs/#_pattern_matching
-* https://dzone.com/articles/higher-order-functions
 
 ---
 
