@@ -4,7 +4,7 @@ class: center, middle
 
 ## Part II
 
-## Monadic modeling and coding
+## Functional programming and javaslang
 
 ---
 
@@ -145,6 +145,23 @@ void story() {
 	FullCat fullCat = story.apply(new Cat(), new Bird());
 }
 ```
+---
+
+# Simple example: with FP
+
+The plot, better:
+
+```
+static <T,U,R> BiFunction<T, U, R> bifunction(BiFunction<T, U, R> f){
+	return f;
+}
+
+public static void story(){
+	BiFunction<Cat, Bird, FullCat> story = 
+		bifunction(Cat::capture)
+		.andThen(CatWithCatch::eat);
+}
+```
 
 ---
 
@@ -164,6 +181,177 @@ Observations:
 
 ---
 
+# Enter...JΛVΛSLΛNG
+
+	Javaslang core is a functional library for Java 8+. 
+	It helps to reduce the amount of code and to increase the robustness. 
+	A first step towards functional programming is to start thinking in 
+	immutable values. Javaslang provides immutable collections and the 
+	necessary functions and control structures to operate on these values.
+
+---
+
+# JΛVΛSLΛNG
+
+It has:
+* Tuples
+* Functions goodies
+* Immutable Monadic Collections
+* Structural Pattern Matching
+* A set of useful monads
+
+---
+
+# JΛVΛSLΛNG
+
+Tuples:
+
+```
+// (Java, 8)
+Tuple2<String, Integer> java8 = Tuple.of("Java", 8); 
+
+// "Java"
+String s = java8._1; 
+
+// 8
+Integer i = java8._2; 
+```
+
+---
+
+# JΛVΛSLΛNG 
+
+Tuple have (of course, you may say) a `map` function.
+
+```
+// (Javaslang, 2)
+Tuple2<String, Integer> that = java8.map(
+        s -> s + "slang",
+        i -> i / 4
+);
+```
+
+---
+#  Function goodies
+
+```
+// sum.apply(1, 2) = 3
+Function2<Integer, Integer, Integer> sum = (a, b) -> a + b;
+```
+--
+```
+Function3<String, String, String, String> function3 =
+        Function3.of(this::methodWhichAccepts3Parameters);
+```
+---
+#  Function goodies
+And also:
+
+* Composition
+* Lifting
+* Currying
+* Memoization
+
+---
+
+# Lifting
+
+Consider
+
+```
+Function2<Integer, Integer, Integer> divide = (a, b) -> a / b;
+``` 
+What happens when `b` is zero? Exceptions!
+
+--
+```
+Function2<Integer, Integer, Option<Integer>> safeDivide = Function2.lift(divide);
+
+// = None
+Option<Integer> i1 = safeDivide.apply(1, 0); 
+
+// = Some(2)
+Option<Integer> i2 = safeDivide.apply(4, 2); 
+```
+---
+# Monads
+
+Javaslang offers some interesting monads
+
+* Option
+* Try
+* Either
+* All javaslang collections are monads (O'Rly?)
+
+---
+# Option
+
+It's java's `Optional`, but serializable.
+
+---
+# Try monad
+
+Wraps the result of a function which may fail (i.e. may throw an exeption).
+
+It can be a `Success(value)` or a `Failure(exception)`.
+
+--
+
+```
+Try.of(() -> bunchOfWork()).getOrElse(other);
+```
+
+_Try_ also supports `map` and `flatMap` because, of course, is a **monad**
+
+---
+# Try monad
+
+You can also try to recover from the failure. Here is an example using the structural pattern matching from javaslang:
+
+```
+A result = Try.of(this::bunchOfWork)
+    .recover(x -> Match(x).of(
+        Case(instanceOf(Exception_1.class), createDefaultA()),
+        Case(instanceOf(Exception_2.class), () -> getAFromSpace()),
+        Case(instanceOf(Exception_n.class), ex -> transformAFromException(ex))
+    ))
+    .getOrElse(other);
+```
+
+---
+# Either monad
+
+	Either represents a value of two possible types. 
+	An Either is either a Left or a Right. 
+
+The `Either` monad is right-biased, so each `map` and `flatMap` operate only if the value is `Right(something)`.
+
+--
+How is it used? With `map` and `flatMap` , of course... or with `mapLeft` if you need to transform the `Left` version.
+
+---
+# List monad
+
+Javaslang's `List` (and each datastructure in the library) is an immutable data structure which is also a monad. 
+
+I.e. it has `map` and `flatMap` built-in, and follows the monad laws.
+
+--
+
+So why streams in jdk? 
+
+---
+# Other
+
+* a proper `Stream` class
+* the `Validation` applicative functor (covered in the test code)
+
+---
+Now we have the functional superpowers, we can modify our models...
+
+
+---
+
 ## Links:
 
 * https://www.youtube.com/watch?v=SN_hqTn4N6Y
@@ -171,6 +359,7 @@ Observations:
 * http://www.nurkiewicz.com/2016/06/functor-and-monad-examples-in-plain-java.html
 * http://nazarii.bardiuk.com/java-monad/
 * http://www.javaslang.io/
+* http://www.javaslang.io/javaslang-docs/#_pattern_matching
 * https://dzone.com/articles/higher-order-functions
 
 ---
