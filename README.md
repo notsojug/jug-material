@@ -8,7 +8,7 @@ This project holds code for the JUG, feel free to fork.
 
 Each module represents a talk of the JUG
 
-- Demo: an empty, disposable module for the next talk 
+- Demo: an empty, disposable module for the next talk
 - Guava: a collection of utilities from Google
 - Optional: a design pattern for values that may be not present (towards functional programming)
 - Throwable: a talk on how (not) to use exceptions and related subjects
@@ -22,6 +22,7 @@ Each module represents a talk of the JUG
 - Streams: the stream API from java 8
 - JAX-RS: Java API for RESTful Web Services in JavaEE 6
 - Monads: a bit of functional programming in Java 8
+- Monadic Model: introduction to Monadic Model and JAVASLANG
 
 ## Contributing
 
@@ -29,11 +30,11 @@ Each accepted talk can (should?) have its own subproject/submodule.
 
 ### Buildable modules
 
-Each module should compile with a `mvn clean test` in the main directory, and optionally be buildable per-se (`cd <modulename> && mvn clean test`). 
+Each module should compile with a `mvn clean test` in the main directory, and optionally be buildable per-se (`cd <modulename> && mvn clean test`).
 
 ### Pull request and travis-ci
 
-Each PR should build with travis-ci: 
+Each PR should build with travis-ci:
 
 - travis-ci only issues a `mvn clean test` at the root of the project, so each subproject must also be mentioned as a module.
 - if you encounter any issues because of the travis-ci configuration, please mention it in the PR and you will be contacted.
