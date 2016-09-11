@@ -24,6 +24,7 @@ Each module represents a talk of the JUG
 - Monads: a bit of functional programming in Java 8
 - Monadic Model: introduction to Monadic Model and JAVASLANG
 - JUnit and AssertJ: a fast intro to test goodies
+- Maven: Some useful advices
 
 ## Contributing
 
