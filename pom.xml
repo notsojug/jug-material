@@ -27,6 +27,7 @@
 		<module>jaxrs</module>
 		<module>monad</module>
 		<module>monadic-model</module>
+		<module>junit-assertj</module>
 	</modules>
 
 	<properties>
