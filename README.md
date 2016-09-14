@@ -23,6 +23,7 @@ Each module represents a talk of the JUG
 - JAX-RS: Java API for RESTful Web Services in JavaEE 6
 - Monads: a bit of functional programming in Java 8
 - Monadic Model: introduction to Monadic Model and JAVASLANG
+- JUnit and AssertJ: a fast intro to test goodies
 
 ## Contributing
 
