@@ -2,10 +2,16 @@ package jug.junitassertj;
 
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 
 public class CalculatorBetterTest {
 	
 	Calculator cut; // Class Under Test
+	
+	@org.junit.BeforeClass
+	public static void heavyLifting(){
+		System.out.println("This is a CPU heavy method");
+	}
 	
 	@org.junit.Before
 	public void setUp(){
