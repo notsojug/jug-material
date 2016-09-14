@@ -43,5 +43,27 @@
 			<version>${javaslang.version}</version>
 		</dependency>
 	</dependencies>
-
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.assertj</groupId>
+				<artifactId>assertj-assertions-generator-maven-plugin</artifactId>
+				<version>2.0.0</version>
+				<!-- generate assertions at every build -->
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate-assertions</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<generateAssertions>true</generateAssertions>
+					<packages>
+						<param>jug.junitassertj</param>
+					</packages>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

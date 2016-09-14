@@ -183,14 +183,23 @@ i.e. `maven package` will run surefire plugin and not failsafe plugin.
 
 If maven lets you run every test you have accumulated during the product history, why skipping tests? They (should) let you know you have not broken those tested behaviours...   
 
+--
+
+Don't modify failing tests *just to make them green*.
+
+--
+
+Provide some good explanation (with a timestamp) if you resort to skip tests altogether.
+
 ---
-## Beyond basics: testing exceptions
+### Beyond basics: testing exceptions
 
 If you want to test if an exception is thrown:
 
 ```
 @Test(expected = ArithmeticException.class)
-public void dividingByZeroShouldThrowArithmeticException() throws Exception {
+public void dividingByZeroShouldThrowArithmeticException() 
+		throws Exception {
 	int a = 5 / 0;
 }
 ```
@@ -202,6 +211,12 @@ What if we want to assert something on the message?
 --
 
 Well, you guessed it: you have to catch it manually (and good luck with that!).
+
+--
+
+Beware of
+- multiple reasons for same exceptions `=>` don't use `expected`
+- don't expect `Exception` alone
 
 ---
 
@@ -304,7 +319,8 @@ Notable readily available runners:
 - **Parameterized**  To run so-called property-testing tests.
 - **Suite** To organize test classes in suites.
 - **Category** To mark tests with a particular category, permitting you to select tests.
-- **PowerMockRunner** To operate on bytecode of hard-to-test classes (static fields? singletons?)
+- **PowerMockRunner** To operate on bytecode of hard-to-test classes (static fields? singletons?).
+- **Arquillian** To be awesome.
 
 See examples on the internet or in your business codebase ;)
 
@@ -339,11 +355,260 @@ JUnit 5 is out!
 
 ---
 
-# What about assertj?
+class: center, middle
+
+# Questions
+
 
 ---
 
-# Assertj
+class: center, middle
+# What about AssertJ?
+
+---
+
+class: center, middle
+
+# AssertJ
+
+Fluent assertions for java
+
+---
+
+# WAT?
+
+```
+import static org.assertj.core.api.Assertions.assertThat;
+```
+```
+assertThat(frodo.getName()).startsWith("Fro")
+                           .endsWith("do")
+                           .isEqualToIgnoringCase("frodo");
+```
+--
+```
+assertThat(fellowshipOfTheRing).hasSize(9)
+                               .contains(frodo, sam)
+                               .doesNotContain(sauron);
+```
+--
+```
+assertThatThrownBy(() -> { throw new Exception("boom!"); })
+	.hasMessage("boom!");
+```
+
+---
+
+# And that's only the appetizer...
+
+```
+// using the 'extracting' feature to check 
+// fellowshipOfTheRing character's names (Java 7)
+assertThat(fellowshipOfTheRing)
+		.extracting("name")
+        .contains("Boromir", "Gandalf", "Frodo", "Legolas")
+        // Can you believe it? REFLECTION
+                               
+// same thing using a Java 8 method reference
+assertThat(fellowshipOfTheRing)
+		.extracting(TolkienCharacter::getName)
+        .doesNotContain("Sauron", "Elrond");
+```
+
+---
+
+# And that's only the appetizer...
+
+```
+assertThat(fellowshipOfTheRing)
+	.filteredOn(character -> character.getName().contains("o"))
+    .containsOnly(aragorn, frodo, legolas, boromir)
+    .extracting(character -> character.getRace().getName())
+    .contains("Hobbit", "Elf", "Man");
+```
+
+---
+
+## On maps also!
+
+```
+assertThat(hashMap).containsKeys("we","are","keys")
+                   .doesNotContainValue("ugly value")
+                   .hasSize(5)
+                   .hasToString("I'm an hashmap!");
+```
+---
+
+## On files!
+
+```
+File xFile = writeFile("xFile", "The Truth Is Out There");
+
+// classic File assertions
+assertThat(xFile).exists().isFile().isRelative();
+
+// String assertions on the file content : 
+// contentOf() comes from Assertions.contentOf static import
+assertThat(contentOf(xFile)).startsWith("The Truth")
+                            .contains("Is Out")
+                            .endsWith("There");
+```
+
+---
+
+### The final feature: automatic assertion generation
+
+
+```xml
+<plugin>
+	<groupId>org.assertj</groupId>
+	<artifactId>assertj-assertions-generator-maven-plugin</artifactId>
+	<version>2.0.0</version>
+	<!-- generate assertions at every build -->
+	<executions>
+		<execution>
+			<goals>
+				<goal>generate-assertions</goal>
+			</goals>
+		</execution>
+	</executions>
+	...
+```
+---
+
+### The final feature: automatic assertion generation
+
+```xml
+	...	
+	<configuration>
+		<generateAssertions>true</generateAssertions>
+		<packages>
+			<param>jug.junitassertj</param>
+		</packages>
+	</configuration>
+</plugin>
+```
+
+and BAM, now you have assertions on your data!
+
+---
+
+### The final feature: automatic assertion generation
+
+Assuming that you have this class:
+
+```
+public class Player {
+  // no getter needed to generate assertion for public fields
+  // private fields getters and setters omitted for brevity
+
+  public String name; // Object assertion generated
+  private int age; // whole number assertion generated
+  private double height; // real number assertion generated
+  private boolean retired; // boolean assertion generated
+  private List<String> teamMates;  // Iterable assertion generated
+  
+  // getters for private fields...
+}
+```
+
+
+---
+
+### The final feature: automatic assertion generation
+
+Without the generator, test was...
+
+```
+@Test
+public void someBoringTest() throws Exception {
+	Player p = createPlayer();
+	assertEquals("yo", p.name);
+	assertThat(p.getTeamMates()).contains("jordan","iverson");
+	assertThat(p.getHeight()).isCloseTo(2.1, Offset.offset(0.1));
+	assertThat(p.isRetired()).isFalse();
+}
+```
+
+---
+
+### The final feature: automatic assertion generation
+
+With generated asserts:
+
+```
+import static jug.junitassertj.Assertions.assertThat;
+// ...
+	
+@Test
+public void someTest() throws Exception {
+	Player p = createPlayer();
+	assertThat(p).hasName("yo")
+		.hasTeamMates("jordan","iverson")
+		.hasHeightCloseTo(2.1, 0.1)
+		.isNotRetired();
+}
+```
+
+
+---
+
+## Other goodies
+
+- Conditions: verify complex features inside a simple assert
+
+```
+// implementation with Java 8 :)
+Condition<String> jediPower = 
+	new Condition<>(JEDIS::contains, "jedi power"); 
+```
+```
+assertThat("Vader").isNot(jedi);
+assertThat(newLinkedHashSet("Luke", "Yoda", "Leia"))
+	.areAtLeast(2, jedi);
+assertThat(newLinkedHashSet("Luke", "Yoda", "Leia"))
+	.haveAtLeast(2, jediPower);
+```
+
+---
+
+## Other goodies
+
+- Conditions: verify complex features inside a simple assert
+- JUnit soft assertions: collect all failing assertions of a single test before giving up.
+
+```
+@Rule
+JUnitSoftAssertions softly = new JUnitSoftAssertions();
+
+@Test
+void test(){
+	Mansion mansion = new Mansion();
+   mansion.hostPotentiallyMurderousDinnerParty();
+   // use SoftAssertions instead of direct assertThat methods
+   softly.assertThat(mansion.guests()).isEqualTo(7);
+   softly.assertThat(mansion.kitchen()).isEqualTo("clean");
+   softly.assertThat(mansion.revolverAmmo()).isEqualTo(6);
+}
+```
+
+Useful for testing validators, multiple related objects, ... 
+
+---
+
+## Other goodies
+
+- Conditions: verify complex features inside a simple assert
+- JUnit soft assertions: collect all failing assertions of a single test before giving up.
+- Supports Guava's objects
+- Supports jdk 6+
+- It is extensible, you can write your own assertions within the framework
+
+---
+
+## Links:
+
+* https://joel-costigliola.github.io/assertj/index.html
 
 ---
 
