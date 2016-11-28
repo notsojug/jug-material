@@ -1,6 +1,6 @@
 # Code material for JUG
 
-![Build status for JUG](https://api.travis-ci.org/civitz/jug-material.svg)
+![Build status for JUG](https://api.travis-ci.org/notsojug/jug-material.svg)
 
 This project holds code for the JUG, feel free to fork.
 
