@@ -29,6 +29,7 @@
 		<module>monadic-model</module>
 		<module>junit-assertj</module>
 		<module>maven</module>
+		<module>swarm</module>
 	</modules>
 
 	<properties>

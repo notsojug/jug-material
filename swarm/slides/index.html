@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Wildfly Swarm Slides</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+      @font-face {
+        font-family: FiraCode-Regular;
+        font-variant-ligatures: contextual;
+        src: url(https://cdn.rawgit.com/tonsky/FiraCode/master/distr/otf/FiraCode-Regular.otf);
+      }
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code {
+        font-family: 'FiraCode-Regular';
+        font-size: 24px;
+      }
+      .remark-slide-content { font-size: 28px; }
+      /* Two-column layout */
+      .left-column {
+        width: 48%;
+        float: left;
+      }
+      .right-column {
+        width: 48%;
+        float: right;
+      }
+      .left-column3 {
+        width: 28%;
+        float: left;
+      }
+      .right-column7 {
+        width: 68%;
+        float: right;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create({
+    	  sourceUrl: './slides.md',
+    	  ratio: '16:9',
+
+          // Navigation options
+          navigation: {
+            // Enable or disable navigating using scroll
+            // Default: true
+            // Alternatives: false
+            scroll: false,
+
+            // Enable or disable navigation using touch
+            // Default: true
+            // Alternatives: false
+            touch: true,
+
+            // Enable or disable navigation using click
+            // Default: false
+            // Alternatives: true
+            click: false
+          },
+
+//        highlightStyle: "darkula",
+          highlightLanguage: "java",
+
+      });
+    </script>
+  </body>
+</html>
