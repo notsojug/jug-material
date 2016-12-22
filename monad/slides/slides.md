@@ -41,7 +41,7 @@ What is FP will be studied in deep in Part II
 
 # Back to the future: Java 8
 
-## [Lambdas](https://github.com/civitz/jug-material/tree/master/lambda)/Closures are there to aid functional programming.
+## [Lambdas](https://github.com/notsojug/jug-material/tree/master/lambda)/Closures are there to aid functional programming.
 
 Java 8 is not suddenly a functional programming language, but (_like Python_) has some support for functional programming.
 

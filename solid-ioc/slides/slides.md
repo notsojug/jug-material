@@ -147,7 +147,7 @@ This is a very powerful concept which allows for a natural implementation of **i
 
 --
 
-### **Immutable data**: [do you remember?](https://github.com/civitz/jug-material/tree/master/immutables)
+### **Immutable data**: [do you remember?](https://github.com/notsojug/jug-material/tree/master/immutables)
 
 --
 
