@@ -49,76 +49,83 @@ Each of these build lifecycles is defined by a different list of **build phases*
 
 ## A Build Phase is Made Up of Plugin Goals
 
-However, even though a build phase is responsible for a specific step in the build lifecycle, the manner in which it carries out those responsibilities may vary. And this is done by declaring the plugin goals bound to those build phases.
+A **build phase** is responsible for a specific step in the build lifecycle
 
-A plugin goal represents a specific task (finer than a build phase) which contributes to the building and managing of a project. **It may be bound to zero or more build phases**.
+**the manner** in which it carries out those responsibilities **may vary**.
 
-Code coverage tools such as **Jacoco** and execution container plugins such as **Tomcat, Cargo, and Docker** bind goals to the `pre-integration-test` phase to prepare the integration test container environment. These plugins also bind goals to the `post-integration-test` phase to collect coverage statistics or decommission the integration test container.
+This is done by declaring the **plugin goals** bound to those build phases.
+
+### A plugin goal represents a specific task
+
+contributes to the building and managing of a project
+
+ **It may be bound to zero or more build phases**.
+
+???
+A plugin goal is finer than a build phase
+
+---
+
+## A Build Phase is Made Up of Plugin Goals
+
+Examples:
+
+* code coverage tools such as **Jacoco**
+* execution container plugins such as **Tomcat, Cargo, and Docker**
+
+**bind goals** to the `pre-integration-test` phase to **prepare** the integration test container environment.
+
+These plugins also **bind goals** to the `post-integration-test` phase to **collect** coverage **statistics** or **decommission** the integration **test container**.
 
 ???
 The phases named with hyphenated-words (`pre-*`, `post-*`, or `process-*`) are not usually directly called from the command line.
 
 ---
 
-## Packaging
+## Plugins
 
-The first, and most common way, is to set the packaging for your project via the equally named POM element `<packaging>`. Some of the valid packaging values are `jar`, `war`, `ear` and pom. If no packaging value has been specified, it will default to `jar`.
+**Plugins** are artifacts that **provide goals** to Maven.
 
-Each packaging contains a list of goals to bind to a particular phase. For example, the `jar` packaging will bind the following goals to build phases of the default lifecycle:
+A plugin may have **one or more** goals.
 
-(next)
+Each **goal** represents a **capability** of that plugin.
 
----
+E.g. the Compiler plugin has two goals:
 
-## Packaging
+* *compile*
+* *testCompile*.
 
-```txt
-process-resources => resources:resources
-compile => compiler:compile
-process-test-resources => resources:testResources
-test-compile => compiler:testCompile
-test => surefire:test
-package => jar:jar
-install => install:install
-deploy => deploy:deploy
-```
-
-If a project that is purely metadata (packaging value is pom) only binds goals to the install and deploy phases.
-
-For a complete list of goal-to-build-phase bindings of some of the packaging types, refer to the [Lifecycle Reference](https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html#Lifecycle_Reference).
+The former **compiles** the source code of your **main code**, while the latter **compiles** the source code of your **test code**.
 
 ---
 
 ## Plugins
 
-Plugins are artifacts that provide goals to Maven. Furthermore, a plugin may have one or more goals wherein each goal represents a capability of that plugin. For example, the Compiler plugin has two goals: *compile* and *testCompile*. The former compiles the source code of your main code, while the latter compiles the source code of your test code.
+.left-column[Plugins can contain information that indicates which **lifecycle phase to bind a goal to**.
 
-Plugins can contain information that indicates which lifecycle phase to bind a goal to. **Note that adding the plugin on its own is not enough information - you must also specify the goals you want to run as part of your build.**
+You can use the `<executions>` element to gain more control over the order of particular goals.
 
-Note that you can use the `<executions>` element to gain more control over the order of particular goals.
+**Note that adding the plugin on its own is not enough information - you must also specify the goals you want to run as part of your build.**]
 
----
-
-## Plugins
-
+.right-column[
+```xml
+<plugin>
+ ...
+ <executions>
+  <execution>
+   <configuration>
+     ...
+   </configuration>
+   <phase>process-test-resources
+   </phase>
+   <goals>
+     <goal>java</goal>
+   </goals>
+  </execution>
+ </executions>
+</plugin>
 ```
- <plugin>
-   <groupId>...</groupId>
-   <artifactId>...</artifactId>
-   <version>...</version>
-   <executions>
-     <execution>
-       <configuration>
-         ...
-       </configuration>
-       <phase>process-test-resources</phase>
-       <goals>
-         <goal>java</goal>
-       </goals>
-     </execution>
-   </executions>
- </plugin>
-```
+]
 
 ---
 
@@ -145,7 +152,7 @@ The Failsafe Plugin is designed to run integration tests:
 
 My plugin configuration:
 
-```
+```xml
 <plugin>
    <groupId>org.apache.maven.plugins</groupId>
    <artifactId>maven-surefire-plugin</artifactId>
@@ -164,7 +171,7 @@ My plugin configuration:
 
 My plugin configuration:
 
-```
+```xml
 <plugin>
   <groupId>org.apache.maven.plugins</groupId>
   <artifactId>maven-failsafe-plugin</artifactId>
@@ -181,7 +188,53 @@ My plugin configuration:
 
 ---
 
-# Which version?
+## Packaging
+
+The first, and most common way, is to set the packaging for your project via the equally named **POM element `<packaging>`**.
+
+Some of the valid packaging values are
+* `jar`
+* `war`
+* `ear`
+* `pom`
+
+If no packaging value has been specified, it will **default to `jar`**.
+
+Each packaging contains a list of goals to bind to a particular phase.
+
+---
+
+## Packaging
+
+For example, the `jar` packaging will bind the following goals to build phases of the default lifecycle:
+
+```txt
+process-resources => resources:resources
+compile => compiler:compile
+process-test-resources => resources:testResources
+test-compile => compiler:testCompile
+test => surefire:test
+package => jar:jar
+install => install:install
+deploy => deploy:deploy
+```
+
+---
+
+## Packaging
+
+If a project that is purely metadata (packaging value is `pom`) only binds goals to the _install_ and _deploy_ phases.
+
+Some more are:
+* `ejb / ejb3 / par / rar / war` (same as `jar`)
+* `ear`
+* `maven-plugin`
+
+For a complete list of goal-to-build-phase bindings of some of the packaging types, refer to the [Lifecycle Reference](https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html#Lifecycle_Reference).
+
+---
+
+# Which Maven version?
 
 * <3.0??
 * 3.0?
@@ -197,6 +250,7 @@ My plugin configuration:
 --
 
 Develop or productiont?
+
 --
 What if they are different?
 
@@ -353,7 +407,7 @@ The Checkstyle Plugin has three goals:
 
 ### Maven: Maven Checkstyle Plugin
 
-```
+```xml
 <executions>
    <execution>
    <id>validate</id>
