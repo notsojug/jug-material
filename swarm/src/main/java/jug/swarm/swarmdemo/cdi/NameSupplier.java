@@ -5,10 +5,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
-@Names
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
+@Names @ApplicationScoped
 public class NameSupplier implements Supplier<String> {
 
-  final SecureRandom rnd = new SecureRandom();
+  @Inject
+  SecureRandom rnd;
 
   final List<String> names = Arrays.asList(
       // Muhammad ibn Jābir al-Ḥarrānī al-Battānī was a founding father of astronomy. https://en.wikipedia.org/wiki/Mu%E1%B8%A5ammad_ibn_J%C4%81bir_al-%E1%B8%A4arr%C4%81n%C4%AB_al-Batt%C4%81n%C4%AB

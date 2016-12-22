@@ -5,10 +5,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
-@Adjectives
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
+@Adjectives @ApplicationScoped
 public class AdjectiveSupplier implements Supplier<String> {
 
-  final SecureRandom rnd = new SecureRandom();
+  @Inject
+  SecureRandom rnd;
 
   final List<String> adjectives = Arrays.asList("admiring",
       "adoring",
