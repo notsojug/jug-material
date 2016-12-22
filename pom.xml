@@ -8,7 +8,7 @@
 	<packaging>pom</packaging>
 
 	<name>jug-material</name>
-	<url>https://civitz.github.io</url>
+	<url>https://notsojug.github.io</url>
 
 	<modules>
 		<module>guava</module>
