@@ -1,5 +1,9 @@
 package jug.swarm.swarmdemo.cdi;
 
+import com.codahale.metrics.Histogram;
+import com.codahale.metrics.annotation.Metric;
+import com.codahale.metrics.annotation.Timed;
+
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -20,11 +24,17 @@ public class NamesGenerator implements Supplier<String> {
   @Names
   private Supplier<String> namesSupplier;
 
+  @Inject
+  @Metric(name = "length", absolute = true)
+  private Histogram length;
+
   @Override
+  @Timed(name = "time", absolute = true)
   public String get() {
     return Stream
         .generate(() -> String.format("%s_%s", adjectivesSupplier.get(), namesSupplier.get()))
-        .filter(NOT_WOZ).findAny().orElseThrow(IllegalStateException::new);
+        .filter(NOT_WOZ).peek(n -> length.update(n.length())).findAny()
+        .orElseThrow(IllegalStateException::new);
   }
 
   private static <E> Predicate<E> not(Predicate<E> p) {

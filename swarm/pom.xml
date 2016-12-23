@@ -128,5 +128,11 @@
 			<groupId>org.wildfly.swarm</groupId>
 			<artifactId>undertow</artifactId>
 		</dependency>
+		<!-- Others -->
+		<dependency>
+			<groupId>io.astefanutti.metrics.cdi</groupId>
+			<artifactId>metrics-cdi</artifactId>
+			<version>1.3.6</version>
+		</dependency>
 	</dependencies>
 </project>
