@@ -1,8 +1,9 @@
 package jug.swarm.swarmdemo;
 
+import jug.swarm.swarmdemo.rest.AsynchronousResource;
 import jug.swarm.swarmdemo.rest.HelloWorldEndpoint;
-import jug.swarm.swarmdemo.rest.NamesResource;
 import jug.swarm.swarmdemo.rest.MetricsResource;
+import jug.swarm.swarmdemo.rest.NamesResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.wildfly.swarm.Swarm;
@@ -14,6 +15,7 @@ public class Main {
   public static void main(String[] args) throws Exception {
     // I'd like swarm
     Swarm container = new Swarm();
+    container.withXmlConfig(Main.class.getClassLoader().getResource("standalone.xml"));
 
     // Please configure also AJP functionalities
     container.fraction(UndertowFraction.createDefaultAndEnableAJPFraction());
@@ -26,6 +28,7 @@ public class Main {
             .addResource(HelloWorldEndpoint.class)
             .addResource(NamesResource.class)
             .addResource(MetricsResource.class)
+            .addResource(AsynchronousResource.class)
             .addPackages(true, "jug.swarm.swarmdemo.cdi")
             .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
             .addAllDependencies();

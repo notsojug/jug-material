@@ -31,6 +31,10 @@ To run the Container:
 
 `$ docker run -p 8080:8080 swarm-demo`
 
+# JMeter
+
+`$ jmeter -n -t hello.jmx -l hello-results.csv -j hello.log -e -o hello-site`
+
 # Metrics
 
 The resource:
