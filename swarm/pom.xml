@@ -13,7 +13,7 @@
 	<packaging>war</packaging>
 
 	<properties>
-		<version.wildfly.swarm>2016.11.0</version.wildfly.swarm>
+		<version.wildfly.swarm>2017.2.0</version.wildfly.swarm>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<failOnMissingWebXml>false</failOnMissingWebXml>
@@ -44,6 +44,9 @@
 				<configuration>
 					<mainClass>jug.swarm.swarmdemo.Main</mainClass>
 					<useUberJar>true</useUberJar>
+					<properties>
+						<java.net.preferIPv4Stack>true</java.net.preferIPv4Stack>
+					</properties>
 				</configuration>
 				<executions>
 					<execution>
