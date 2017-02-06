@@ -182,9 +182,124 @@ class: center, middle
 
 Of course you don't need half of source menu, because you have immutable beans and use libraries such as [immutables](https://immutables.github.io/), right?
 
+---
+## Did you know... code navigation?
+
+If you are on a new codebase:
+
+- navigate to declaration/implementation of a method via `F3`
+- find the type hierarchy of a class via `F4`
+- list/navigate to methods using `Ctrl-O`
+- search-as-you-type in the file via `Ctrl-J`
+- go to line with `Ctrl-L`
+- go to previously edited line/file with `Alt-left` or `Alt-right`
+- go to method calls of a method: `Ctrl-alt-H`
+- find occurrences of a string with `Ctrl-alt-G`
+
+
+
+---
+class:center, middle
+# And also...the mighty...
+
+DELETE LINES
+
+with `Ctrl-D`
+
+--
+
+Which in IntelliJ IDEA is of course "duplicate lines".
+
+---
+class:center, middle
+# Useful plugins
+
+---
+# Useful plugins: code recommenders
+
+This is default from Eclipse Mars onwards:
+
+It provides:
+
+- fuzzy method name search in auto complete mode.
+  E.g.: type `var` to get `getVar` and `setVar` suggested
+- most frequently used method suggestion
+- automatic code snippet suggestion (if enabled)
+
+---
+# Useful plugins: EGit
+
+Again default from Eclipse Mars.
+
+Provides git support in Eclipse.
+
+--
+
+It supports git flow branching model!
+
+---
+#Useful plugins: JBoss studio
+
+Recommended for Java EE development in general, not limited to RedHat application server.
+
+It provides:
+
+- server integration within IDE
+- CDI support
+  + bean.xml parsing and modeling
+  + producers discovery
+  + scoped bean avoid
+- JaxRs support and code validation
+- Arquillian support
+
+---
+class: center, middle
+
+# Dialogs you may have never heard about
+
+---
+# Dialogs: Tasks
+
+It mantains a list of TODOs and other configurable markers all in one place.
+
+Never miss a TODO again.
+
+--
+
+Please put date & name in your TODOs
+
+---
+# Dialogs: Display
+
+This dialog is active in debuggings session.
+
+It is a scratchpad that works within the current debug context.
+
+You can:
+- write some code & run it in the current context
+- reference context's variables
+- force a return of the current method with `Alt-Shift-F`
+
+---
+class: center, middle
+
+# Miscellaneous
+
+---
+# Miscellaneous: Favorite classes
+
+You can put your most favorite classes in this preference part.
+
+
 
 ---
 
 class: center, middle
 
 # Questions
+
+---
+
+# Links
+
+- EGit <a href="https://wiki.eclipse.org/EGit/User_Guide%23Enabling_Gitflow_for_a_repository">git flow</a>
