@@ -288,9 +288,32 @@ class: center, middle
 ---
 # Miscellaneous: Favorite classes
 
-You can put your most favorite classes in this preference part.
+You can put your most favorite classes in this preference part: Eclipse will cache their methods and you can reference them without importing them before.
 
+--
 
+E.g.: if you use EasyMock often, you can add `org.easymock.EasyMock` to the preferences, and now you just need to type `createMock`: Eclipse will statically import the EasyMock method and you just need to `Ctrl-space` your way in the test.
+
+--
+
+Pro tip: use it for java 8 `Collectors` class, for assertj's `Assertions`, and for `EasyMock` for maximum productivity boost.
+
+---
+# Miscellaneous: Templates
+
+You can create context-sensitive snippets and have the IDE type them for you.
+
+--
+
+E.g.
+
+- Find yourself writing the TODOs in a particular way? Save it as a template!
+- All your classes have a special method you always write? Another template!
+- All your logs have the method name as first part? Template!!!
+
+--
+
+You'll wish to just `Ctrl-space` your life....
 
 ---
 
@@ -303,3 +326,5 @@ class: center, middle
 # Links
 
 - EGit <a href="https://wiki.eclipse.org/EGit/User_Guide%23Enabling_Gitflow_for_a_repository">git flow</a>
+- Eclipse [official wiki](https://wiki.eclipse.org)
+- Not-so-jug [eclipse wiki](https://github.com/notsojug/jug-material/wiki/Eclipse)
