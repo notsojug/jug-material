@@ -327,5 +327,7 @@ class: center, middle
 
 - EGit <a href="https://wiki.eclipse.org/EGit/User_Guide%23Enabling_Gitflow_for_a_repository">git flow</a>
 - Eclipse [official wiki](https://wiki.eclipse.org)
+- Eclipse [tips and tricks](http://help.eclipse.org/neon/index.jsp?topic=%2Forg.eclipse.jdt.doc.user%2Ftips%2Fjdt_tips.html)
+- What's new in [eclipse](http://help.eclipse.org/neon/index.jsp?topic=%2Forg.eclipse.jdt.doc.user%2FwhatsNew%2Fjdt_whatsnew.html)
 - [JBoss tools](https://tools.jboss.org/features/)
 - Not-so-jug [eclipse wiki](https://github.com/notsojug/jug-material/wiki/Eclipse)
