@@ -253,6 +253,23 @@ It provides:
 - Arquillian support
 
 ---
+# Useful plugins: EclEmma
+
+It provides code coverage for your code.
+
+Just run your tests with junit and EclEmma will trace if your production code has been executed at least once.
+
+It can track:
+
+- multiple branches
+- multi-condition ifs
+- dead code
+- unreached catch clauses
+- more...
+
+You can run single methods, entire test classes, or whole packages full of tests.
+
+---
 class: center, middle
 
 # Dialogs you may have never heard about
@@ -263,6 +280,10 @@ class: center, middle
 It mantains a list of TODOs and other configurable markers all in one place.
 
 Never miss a TODO again.
+
+--
+
+Default markers are `TODO`, `XXX`, `FIXME`, but you can add something like `PLEASEHELP`, `OHGODWHY`, `TESTME`
 
 --
 
@@ -310,6 +331,10 @@ E.g.
 - Find yourself writing the TODOs in a particular way? Save it as a template!
 - All your classes have a special method you always write? Another template!
 - All your logs have the method name as first part? Template!!!
+
+--
+
+The `test` creation you've seen before is a template! Eclipse ships with a load of them, for `for` creation, `syso` for printing to standard output, `syserr` for standard error, and much more...
 
 --
 
