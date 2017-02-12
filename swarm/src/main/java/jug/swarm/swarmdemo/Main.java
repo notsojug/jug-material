@@ -4,6 +4,7 @@ import jug.swarm.swarmdemo.rest.AsynchronousResource;
 import jug.swarm.swarmdemo.rest.HelloWorldEndpoint;
 import jug.swarm.swarmdemo.rest.MetricsResource;
 import jug.swarm.swarmdemo.rest.NamesResource;
+import jug.swarm.swarmdemo.rest.RuntimeExceptionMapper;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.wildfly.swarm.Swarm;
@@ -29,7 +30,9 @@ public class Main {
             .addResource(NamesResource.class)
             .addResource(MetricsResource.class)
             .addResource(AsynchronousResource.class)
+            .addResource(RuntimeExceptionMapper.class)
             .addPackages(true, "jug.swarm.swarmdemo.cdi")
+            .addPackages(true, "jug.swarm.swarmdemo.rest.async")
             .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
             .addAllDependencies();
 

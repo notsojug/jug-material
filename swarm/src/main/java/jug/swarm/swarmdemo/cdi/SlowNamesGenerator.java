@@ -19,6 +19,9 @@ public class SlowNamesGenerator implements Supplier<String> {
 
   @Override
   public String get() {
+    if(rnd.nextInt(2) == 0) {
+      throw new IllegalStateException("random error");
+    }
     Try.run(() -> Thread.sleep(rnd.nextInt(3000)));
     return namesGenerator.get();
   }
