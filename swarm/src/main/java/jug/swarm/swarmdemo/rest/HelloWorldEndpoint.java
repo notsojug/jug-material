@@ -1,6 +1,8 @@
 package jug.swarm.swarmdemo.rest;
 
-import static java.lang.Math.*;
+import static java.lang.Math.atan;
+import static java.lang.Math.tan;
+import static jug.swarm.swarmdemo.rest.async.ExecuteAsync.with;
 
 import javaslang.control.Try;
 import javaslang.control.Try.CheckedRunnable;
@@ -50,22 +52,11 @@ public class HelloWorldEndpoint {
   @POST
   @Path("/async")
   @Produces("text/plain")
-  public void doPostAsync(@FormParam("n") String n, @FormParam("p") String p,
-      @Suspended final AsyncResponse asyncResponse) {
-    new Thread(() -> {
-      LOGGER.info(params(n, p));
-      asyncResponse.resume(Response.ok(Try.of(SUPPLIER).getOrElse("notan")).build());
-    }).start();
-  }
-
-  @POST
-  @Path("/async/managed")
-  @Produces("text/plain")
   public void doPostManaged(@FormParam("n") String n, @FormParam("p") String p,
       @Suspended final AsyncResponse asyncResponse) {
-    managedExecutorService.execute(() -> {
+    with(asyncResponse, 1500L, managedExecutorService).execute(() -> {
       LOGGER.info(params(n, p));
-      asyncResponse.resume(Response.ok(Try.of(SUPPLIER).getOrElse("notan")).build());
+      return Response.ok(Try.of(SUPPLIER).getOrElse("notan")).build();
     });
   }
 

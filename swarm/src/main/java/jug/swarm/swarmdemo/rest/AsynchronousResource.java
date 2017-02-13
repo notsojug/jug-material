@@ -1,8 +1,9 @@
 package jug.swarm.swarmdemo.rest;
 
+import static jug.swarm.swarmdemo.rest.async.ExecuteAsync.with;
+
 import javaslang.control.Try;
 import jug.swarm.swarmdemo.cdi.SlowGenerator;
-import jug.swarm.swarmdemo.rest.async.ExecuteAroundAsync;
 
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
@@ -50,7 +51,7 @@ public class AsynchronousResource {
   @Produces("text/plain")
   public void asyncRestMethodExecute(@QueryParam("param") final String param,
       @Suspended final AsyncResponse asyncResponse) {
-    ExecuteAroundAsync.of(asyncResponse, 1500L, managedExecutorService).execute(() -> {
+    with(asyncResponse, 1500L, managedExecutorService).execute(() -> {
       return Response.ok(namesGenerator.get() + nullToEmpty(param)).build();
     });
   }
