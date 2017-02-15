@@ -26,13 +26,8 @@ public class Main {
 
     // Build an archive (war)
     JAXRSArchive jaxrsArchive = ShrinkWrap.create(JAXRSArchive.class)
-            .addResource(HelloWorldEndpoint.class)
-            .addResource(NamesResource.class)
-            .addResource(MetricsResource.class)
-            .addResource(AsynchronousResource.class)
-            .addResource(RuntimeExceptionMapper.class)
             .addPackages(true, "jug.swarm.swarmdemo.cdi")
-            .addPackages(true, "jug.swarm.swarmdemo.rest.async")
+            .addPackages(true, "jug.swarm.swarmdemo.rest")
             .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
             .addAllDependencies();
 
