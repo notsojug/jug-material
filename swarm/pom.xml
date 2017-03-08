@@ -38,6 +38,13 @@
 		<finalName>${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<useIncrementalCompilation>false</useIncrementalCompilation>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.wildfly.swarm</groupId>
 				<artifactId>wildfly-swarm-plugin</artifactId>
 				<version>${version.wildfly.swarm}</version>
@@ -133,6 +140,18 @@
 			<groupId>io.javaslang</groupId>
 			<artifactId>javaslang</artifactId>
 			<version>2.0.5</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.civitz.viper</groupId>
+			<artifactId>library</artifactId>
+			<version>0.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.civitz.viper</groupId>
+			<artifactId>generator</artifactId>
+			<version>0.1.0</version>
+			<scope>provided</scope>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
 </project>
