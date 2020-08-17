@@ -409,7 +409,7 @@ A result = Try.of(this::bunchOfWork)
 * https://bruceeckel.github.io/2015/10/17/are-java-8-lambdas-closures/
 * http://www.nurkiewicz.com/2016/06/functor-and-monad-examples-in-plain-java.html
 * http://nazarii.bardiuk.com/java-monad/
-* http://www.javaslang.io/
+* http://www.vavr.io/
 * https://dzone.com/articles/higher-order-functions
 
 ---

@@ -4,7 +4,7 @@ class: center, middle
 
 ## Part II
 
-## Functional programming and javaslang
+## Functional programming and VAVR
 
 ---
 
@@ -181,17 +181,17 @@ Observations:
 
 ---
 
-# Enter...JΛVΛSLΛNG
+# Enter...VΛVR
 
-	Javaslang core is a functional library for Java 8+. 
+	VAVR core is a functional library for Java 8+.
 	It helps to reduce the amount of code and to increase the robustness. 
 	A first step towards functional programming is to start thinking in 
-	immutable values. Javaslang provides immutable collections and the 
+	immutable values. Vavr provides immutable collections and the
 	necessary functions and control structures to operate on these values.
 
 ---
 
-# JΛVΛSLΛNG
+# VΛVR
 
 It has:
 * Tuples
@@ -202,7 +202,7 @@ It has:
 
 ---
 
-# JΛVΛSLΛNG
+# VΛVR
 
 Tuples:
 
@@ -219,16 +219,18 @@ Integer i = java8._2;
 
 ---
 
-# JΛVΛSLΛNG 
+# VΛVR 
 
 Tuple have (of course, you may say) a `map` function.
 
 ```
-// (Javaslang, 2)
-Tuple2<String, Integer> that = java8.map(
-        s -> s + "slang",
+Tuple2<String, Integer> take = Tuple.of("Va", 8); 
+// (Va, 8)
+Tuple2<String, Integer> that = take.map(
+        s -> s + "vr",
         i -> i / 4
 );
+// (Vavr, 2)
 ```
 
 ---
@@ -276,12 +278,12 @@ Option<Integer> i2 = safeDivide.apply(4, 2);
 ---
 # Monads
 
-Javaslang offers some interesting monads
+Vavr offers some interesting monads
 
 * Option
 * Try
 * Either
-* All javaslang collections are monads (O'Rly?)
+* All vavr collections are monads (O'Rly?)
 
 ---
 # Option
@@ -306,7 +308,7 @@ _Try_ also supports `map` and `flatMap` because, of course, is a **monad**
 ---
 # Try monad
 
-You can also try to recover from the failure. Here is an example using the structural pattern matching from javaslang:
+You can also try to recover from the failure. Here is an example using the structural pattern matching from vavr:
 
 ```
 A result = Try.of(this::bunchOfWork)
@@ -332,7 +334,7 @@ How is it used? With `map` and `flatMap` , of course... or with `mapLeft` if you
 ---
 # List monad
 
-Javaslang's `List` (and each datastructure in the library) is an immutable data structure which is also a monad. 
+Vavr's `List` (and each datastructure in the library) is an immutable data structure which is also a monad. 
 
 I.e. it has `map` and `flatMap` built-in, and follows the monad laws.
 
@@ -355,8 +357,8 @@ Now we have the functional superpowers, we can modify our models...
 ## Links:
 
 * http://www.slideshare.net/mariofusco/from-object-oriented-to-functional-domain-modeling
-* http://www.javaslang.io/
-* http://www.javaslang.io/javaslang-docs/#_pattern_matching
+* http://www.vavr.io/
+* https://www.vavr.io/vavr-docs/#_pattern_matching
 
 ---
 

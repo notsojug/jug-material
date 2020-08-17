@@ -22,7 +22,7 @@ Each module represents a talk of the JUG
 - Streams: the stream API from java 8
 - JAX-RS: Java API for RESTful Web Services in JavaEE 6
 - Monads: a bit of functional programming in Java 8
-- Monadic Model: introduction to Monadic Model and JAVASLANG
+- Monadic Model: introduction to Monadic Model and VAVR
 - JUnit and AssertJ: a fast intro to test goodies
 - Maven: Some useful advices
 

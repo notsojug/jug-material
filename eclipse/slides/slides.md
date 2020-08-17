@@ -317,7 +317,7 @@ E.g.: if you use EasyMock often, you can add `org.easymock.EasyMock` to the pref
 
 --
 
-Pro tip: use it for java 8 `Collectors` class, for assertj's `Assertions`, `EasyMock`, `javaslang.API`, and `javaslang.Predicates` for maximum productivity boost.
+Pro tip: use it for java 8 `Collectors` class, for assertj's `Assertions`, `EasyMock`, `io.vavr.API`, and `io.vavr.Predicates` for maximum productivity boost.
 
 ---
 # Miscellaneous: Templates

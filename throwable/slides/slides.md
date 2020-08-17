@@ -363,7 +363,7 @@ On bytecode lines 28 to 38, we have the finally rethrow protection.
 
 ## But wait, you said that an Exception is a possible **outcome of invoking the method**
 
-What if I'm a functional developer? `Javaslang` to the rescue!
+What if I'm a functional developer? `Vavr` to the rescue!
 
 ```java
 String getContent(String location) throws IOException {
@@ -506,7 +506,7 @@ Arrays.stream(dir.listFiles())
 * http://www.slideshare.net/mariofusco/from-object-oriented-to-functional-domain-modeling/33
 * https://shipilev.net/blog/2014/exceptional-performance/
 * http://blog.me4502.com/exceptions-as-flow-control-in-java.html
-* http://www.javaslang.io/
+* http://www.vavr.io/
 * https://github.com/jOOQ/jOOL
 * https://docs.oracle.com/javase/tutorial/essential/exceptions/index.html
 
