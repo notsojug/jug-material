@@ -8,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.assertj.core.api.Condition;
 import org.junit.Test;
 
-import javaslang.control.Validation;
+import io.vavr.control.Validation;
 import jug.monadic.ImmutablePerson;
 import jug.monadic.Person;
 import jug.monadic.ValidationException;
@@ -32,7 +32,7 @@ public class ValidationTest {
   public void shouldValidate() throws Exception {
     Validation<ValidationException, Person> validation = Validation
         .combine(validateName(C_NAME), validateAge(C_AGE), validateCf(C_CF))
-        .<Person> ap(ImmutablePerson::of).leftMap(ValidationException::of);
+        .<Person> ap(ImmutablePerson::of).mapError(ValidationException::of);
 
     validation.peek(System.out::println); validation.swap().peek(System.out::println);
 
@@ -45,7 +45,7 @@ public class ValidationTest {
   public void shouldNotValidateName() throws Exception {
     Validation<ValidationException, Person> validation = Validation
         .combine(validateName(W_NAME), validateAge(C_AGE), validateCf(C_CF))
-        .<Person> ap(ImmutablePerson::of).leftMap(ValidationException::of);
+        .<Person> ap(ImmutablePerson::of).mapError(ValidationException::of);
 
     validation.peek(System.out::println); validation.swap().peek(System.out::println);
 
@@ -61,7 +61,7 @@ public class ValidationTest {
   public void shouldNotValidateNameAge() throws Exception {
     Validation<ValidationException, Person> validation = Validation
         .combine(validateName(W_NAME), validateAge(W_AGE), validateCf(C_CF))
-        .<Person> ap(ImmutablePerson::of).leftMap(ValidationException::of);
+        .<Person> ap(ImmutablePerson::of).mapError(ValidationException::of);
 
     validation.peek(System.out::println); validation.swap().peek(System.out::println);
 
@@ -77,7 +77,7 @@ public class ValidationTest {
   public void shouldNotValidateNameAgeCf() throws Exception {
     Validation<ValidationException, Person> validation = Validation
         .combine(validateName(W_NAME), validateAge(W_AGE), validateCf(W_CF))
-        .<Person> ap(ImmutablePerson::of).leftMap(ValidationException::of);
+        .<Person> ap(ImmutablePerson::of).mapError(ValidationException::of);
 
     validation.peek(System.out::println); validation.swap().peek(System.out::println);
 

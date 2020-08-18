@@ -2,7 +2,7 @@ package jug.monadic;
 
 import org.immutables.value.Value;
 
-import javaslang.control.Validation;
+import io.vavr.control.Validation;
 
 @Value.Immutable(builder = false)
 @Value.Style(jdkOnly = true)

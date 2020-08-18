@@ -3,7 +3,7 @@ package jug.monad.advanced.slang;
 import java.util.Objects;
 import java.util.function.Function;
 
-import javaslang.Function0;
+import io.vavr.Function0;
 import jug.monad.advanced.Functor;
 
 public class FPromise<T> implements Functor<T, FPromise<?>> {

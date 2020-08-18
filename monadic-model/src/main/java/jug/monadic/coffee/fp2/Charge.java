@@ -1,6 +1,6 @@
 package jug.monadic.coffee.fp2;
 
-import javaslang.control.Try;
+import io.vavr.control.Try;
 
 public class Charge {
 	final long amount;

@@ -4,10 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
-import javaslang.Tuple2;
-import javaslang.collection.List;
-import javaslang.control.Try;
-import javaslang.control.Try.Failure;
+import io.vavr.Tuple2;
+import io.vavr.collection.List;
+import io.vavr.control.Try;
+import io.vavr.control.Try.Failure;
 
 public class CafeTest {
 	@Test

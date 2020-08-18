@@ -2,10 +2,10 @@ package jug.monadic.coffee.fp2;
 
 import java.util.function.Function;
 
-import javaslang.Tuple;
-import javaslang.Tuple2;
-import javaslang.collection.List;
-import javaslang.collection.Stream;
+import io.vavr.Tuple;
+import io.vavr.Tuple2;
+import io.vavr.collection.List;
+import io.vavr.collection.Stream;
 
 public class Cafe {
 	public static Tuple2<Coffee, Charge> buyCoffee(CreditCard cc) {
