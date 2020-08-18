@@ -289,6 +289,40 @@ Vavr offers some interesting monads
 # Option
 
 It's java's `Optional`, but serializable.
+--
+
+
+It is an interface with two implementations: `Some` and `None` for instances with or without value.
+
+It supports the same creation model of java.util.Optional:
+```
+Option<String> something = Option.of("hello");
+// Some(hello)
+Option<Integer> nothing = Option.none();
+// None
+Option<Integer> nothingToo = Option.of(null);
+// None
+```
+
+---
+# Option
+
+Supports map/flatMap and a few other handy features like:
+- conversion to VAVR's and java.util's collections, and to plain arrays
+- conversion to `java.util.Stream` via `.toJavaStream()`
+- it is itself an instance of `java.util.Iterable`
+
+---
+# Option - WARNING
+
+Since `Option` respects the monad laws, it supports the creation of a `Some(null)`, for example:
+```
+Option<String> something = Option.of("hello")
+	.map(ignore -> null);
+// Some(null)
+```
+
+This is done because the purpose of an `Option` is to express the absence or presence of value, and *it respects the monad laws*, while `java.util.Optional` never tries to adhere the monad laws.
 
 ---
 # Try monad
@@ -300,7 +334,10 @@ It can be a `Success(value)` or a `Failure(exception)`.
 --
 
 ```
-Try.of(() -> bunchOfWork()).getOrElse(other);
+Try.of(() -> bunchOfWorkThatMayThrow())
+	.map(this::transformationWithNoExceptions)
+	.mapTry(this::anotherPossibleThrowingFunction)
+	.getOrElse(defaultValue);
 ```
 
 _Try_ also supports `map` and `flatMap` because, of course, is a **monad**
