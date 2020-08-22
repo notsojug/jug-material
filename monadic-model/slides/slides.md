@@ -334,13 +334,27 @@ It can be a `Success(value)` or a `Failure(exception)`.
 --
 
 ```
-Try.of(() -> bunchOfWorkThatMayThrow())
-	.map(this::transformationWithNoExceptions)
-	.mapTry(this::anotherPossibleThrowingFunction)
-	.getOrElse(defaultValue);
+Try.of(() -> "hello");
+//Success(hello)
+Try.of(() -> surelyFailing());
+//Failure(java.lang.RuntimeException: hold on)
 ```
 
 _Try_ also supports `map` and `flatMap` because, of course, is a **monad**
+
+---
+# Try monad
+
+More examples:
+
+```
+Try.of(() -> bunchOfWorkThatMayThrow())
+	.map(this::transformationWithNoExceptions)
+	.mapTry(this::anotherPossibleThrowingFunction);
+	.getOrElse(defaultValue);
+```
+
+`mapTry` behaves like `map` but also accepts functions that throw exceptions.
 
 ---
 # Try monad
