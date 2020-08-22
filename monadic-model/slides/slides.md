@@ -152,7 +152,8 @@ void story() {
 The plot, better:
 
 ```
-static <T,U,R> BiFunction<T, U, R> bifunction(BiFunction<T, U, R> f){
+static <T,U,R> BiFunction<T, U, R> bifunction(
+	BiFunction<T, U, R> f) {
 	return f;
 }
 
@@ -184,10 +185,11 @@ Observations:
 # Enter...VΛVR
 
 	VAVR core is a functional library for Java 8+.
-	It helps to reduce the amount of code and to increase the robustness. 
-	A first step towards functional programming is to start thinking in 
-	immutable values. Vavr provides immutable collections and the
-	necessary functions and control structures to operate on these values.
+	It helps to reduce the amount of code and to increase
+	the robustness. A first step towards functional programming
+	is to start thinking in immutable values. Vavr provides
+	immutable collections and the necessary functions and
+	control structures to operate on these values.
 
 ---
 
@@ -267,7 +269,8 @@ What happens when `b` is zero? Exceptions!
 
 --
 ```
-Function2<Integer, Integer, Option<Integer>> safeDivide = Function2.lift(divide);
+Function2<Integer, Integer, Option<Integer>> safeDivide =
+    Function2.lift(divide);
 
 // = None
 Option<Integer> i1 = safeDivide.apply(1, 0); 
@@ -363,24 +366,147 @@ You can also try to recover from the failure. Here is an example using the struc
 
 ```
 A result = Try.of(this::bunchOfWork)
-    .recover(x -> Match(x).of(
-        Case(instanceOf(Exception_1.class), createDefaultA()),
-        Case(instanceOf(Exception_2.class), () -> getAFromSpace()),
-        Case(instanceOf(Exception_n.class), ex -> transformAFromException(ex))
-    ))
-    .getOrElse(other);
+  .recover(x -> Match(x).of(
+    Case(instanceOf(Exception_1.class), createDefaultA()),
+    Case(instanceOf(Exception_2.class), () -> getAFromSpace()),
+    Case(instanceOf(Exception_n.class), ex -> transformAFromException(ex))
+  ))
+  .getOrElse(other);
 ```
 
 ---
 # Either monad
 
-	Either represents a value of two possible types. 
-	An Either is either a Left or a Right. 
+	Either represents a value of two possible types.
+	An Either is either a Left or a Right.
 
-The `Either` monad is right-biased, so each `map` and `flatMap` operate only if the value is `Right(something)`.
+The `Either` monad is right-biased, which means that the happy path is on the right ("right" also means "good" or "correct" in english), while the errors are on the left. So each `map` and `flatMap` operate only if the value is `Right(something)`.
+
+There are specific alternative methods to operate on the left part, we will see them.
+
+---
+# Either monad
+
+How is it used? With `map` and `flatMap` , of course... or with `mapLeft` if you need to transform the `Left` version.
 
 --
-How is it used? With `map` and `flatMap` , of course... or with `mapLeft` if you need to transform the `Left` version.
+
+Directly, for example in a method:
+
+```
+Either<ErrorBean, GoodValue> getGoodValue(int identifier) {
+	// bunch of work
+	if (weAreGood()) {
+		return Either.right(GoodValue.of("well done"));
+	}
+	return Either.left(ErrorBean.of("something went wrong"));
+}
+```
+
+---
+# Either monad
+
+From a try conversion:
+
+```
+Try.of(() -> surelyFailing()).toEither();
+// Either<Throwable, String>
+```
+--
+
+Then you can map the exception to whatever you need:
+
+```
+Try.of(() -> surelyFailing())   // Try<String>
+  .map(Integer::parseInt)       // Try<Integer>
+  .toEither()                   // Either<Throwable, Integer>
+  .map(integer->integer * 2)    // Either<Throwable, Integer>
+  .mapLeft(throwed ->
+     ErrorBean.of(throwed));    // Either<ErrorBean, Integer>
+```
+
+---
+# Either monad - railway programming
+
+Assuming all computations have a good/right/happy path, and a wrong/left/error path, we can transform the try-compute-catch-throw into an Either series of transformations.
+
+---
+## Either monad - railway programming
+Compare the following example from a REST endpoint, assuming a proper exception mapper:
+
+```
+String result1;
+try {
+	result1 = bunchOfWorkThatMayThrow();
+} catch (Exception ex1) {
+	throw ExceptionOnFirstStep(ex1); // error path
+}
+try {
+	Integer result2 = findSomeData(result1); // happy path
+	return result2 / 4; // happy path
+} catch (NullPointerException ex3) {
+	return DEFAULT_VALUE; // default result (error path)
+} catch (Exception ex2) {
+	throw new ExceptionOnSecondStep(ex2); // error path
+}
+```
+
+---
+## Either monad - railway programming
+To the same with Either and proper error mapping:
+
+```
+// assuming we modify the other methods
+Either<ErrorBean, String> bunchOfWorkThatMayThrow() {}
+Option<Integer> findSomeData(String identifier) {}
+
+// then we get
+return bunchOfWorkThatMayThrow()
+  .map(identifier -> findSomeData(identifier)
+    .map(result -> result / 4)
+    .orElse(DEFAULT_VALUE))
+  .mapLeft(errorBean -> toJson(errorBean))
+```
+---
+## Either monad - railway programming
+To the same with Either and proper error mapping:
+
+```
+// assuming we modify the other methods
+Either<ErrorBean, String> bunchOfWorkThatMayThrow() {}
+Option<Integer> findSomeData(String identifier) {}
+
+// then we get
+return bunchOfWorkThatMayThrow()  // happy path
+  .map(identifier -> findSomeData(identifier) // happy path
+    .map(result -> result / 4) // happy path
+    .orElse(DEFAULT_VALUE)) // default result (error path)
+  .mapLeft(errorBean -> toJson(errorBean)) // error path
+```
+---
+## Either monad - railway programming
+To the same with Either and proper error mapping:
+
+```
+// assuming we modify the other methods
+Either<ErrorBean, String> bunchOfWorkThatMayThrow() {}
+Option<Integer> findSomeData(String identifier) {}
+
+// then we get
+return bunchOfWorkThatMayThrow()  // Either<ErrorBean, String>
+  .map(identifier -> findSomeData(identifier) // Option<Integer>
+    .map(result -> result / 4) // Option<Integer>
+    .orElse(DEFAULT_VALUE)) // Either<ErrorBean, Integer>
+  .mapLeft(errorBean -> toJson(errorBean))
+```
+--
+That is, if we model it correctly, we can see and think about the happy path clearly, and deal with the errors separately.
+---
+# Other
+
+* immutable collections which are also monads, see examples on next slides
+* a proper `Stream` class
+* the `Validation` applicative functor (covered in the test code)
 
 ---
 # List monad
@@ -392,12 +518,6 @@ I.e. it has `map` and `flatMap` built-in, and follows the monad laws.
 --
 
 So why streams in jdk? 
-
----
-# Other
-
-* a proper `Stream` class
-* the `Validation` applicative functor (covered in the test code)
 
 ---
 Now we have the functional superpowers, we can modify our models...
